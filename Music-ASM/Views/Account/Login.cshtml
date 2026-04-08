@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập hệ thống";
+    Layout = null; // Bỏ layout chung để form đăng nhập đứng độc lập
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Music ASM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #1db954, #191414);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .btn-spotify {
+            background-color: #1db954;
+            color: white;
+            font-weight: bold;
+            border: none;
+        }
+        .btn-spotify:hover {
+            background-color: #1aa34a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" style="color: #1db954;">Music-ASM</h2>
+            <p class="text-muted">Đăng nhập để trải nghiệm âm nhạc</p>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger text-center" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+
+        <form asp-controller="Account" asp-action="Login" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label fw-bold">Tài khoản</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên đăng nhập..." required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label fw-bold">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu..." required>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-spotify btn-lg">ĐĂNG NHẬP</button>
+            </div>
+        </form>
+        
+        <div class="text-center mt-3">
+            <a href="/" class="text-decoration-none text-muted">Về trang chủ</a>
+        </div>
+    </div>
+
+</body>
+</html>

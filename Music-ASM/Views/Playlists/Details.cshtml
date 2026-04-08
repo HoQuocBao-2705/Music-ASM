@@ -1,0 +1,101 @@
+﻿@model Music_ASM.Models.Playlist
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <!-- 🔥 HEADER -->
+    <div class="d-flex align-items-end mb-4">
+        <img src="@Model.CoverImageUrl"
+             style="width:200px; border-radius:10px; margin-right:20px;" />
+
+        <div>
+            <h2>@Model.Title</h2>
+            <p>@Model.Description</p>
+            <p class="text-muted">Tạo bởi: @Model.User?.FullName</p>
+
+            <!-- 🔥 PLAY ALL -->
+            <button class="btn btn-success mt-2"
+                    onclick="playPlaylist()">
+                ▶ Phát tất cả
+            </button>
+        </div>
+    </div>
+
+    <!-- 🔥 DANH SÁCH -->
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên bài</th>
+                <th>Nghệ sĩ</th>
+                <th>Thời lượng</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int index = 1;
+            }
+
+            @foreach (var item in Model.PlaylistSongs)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@item.Song.Title</td>
+                    <td>@item.Song.Artist.Name</td>
+                    <td>@(item.Song.Duration / 60):@(item.Song.Duration % 60)</td>
+
+                    <td>
+                        <button class="btn btn-success btn-sm"
+                                onclick="playSong(@item.Song.SongId)">
+                            ▶
+                        </button>
+                    </td>
+                </tr>
+
+                index++;
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts {
+    <script>
+        // 🔥 LOAD PLAYLIST INTO JS
+        let playlist = [
+            @foreach (var item in Model.PlaylistSongs)
+            {
+                    <text>
+                    {
+                        id: @item.Song.SongId,
+                        file: '@item.Song.FilePath'
+                    },
+                    </text>
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function playPlaylist() {
+            if (playlist.length === 0) return;
+
+            currentIndex = 0;
+            playSong(playlist[currentIndex].id);
+        }
+
+        // 🔥 AUTO NEXT
+        let audio = document.getElementById("audio-player");
+
+        audio.addEventListener("ended", function () {
+            currentIndex++;
+            if (currentIndex < playlist.length) {
+                playSong(playlist[currentIndex].id);
+            }
+        });
+    </script>
+}

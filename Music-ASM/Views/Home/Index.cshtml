@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Trang chủ";
+}
+
+<div class="container-fluid">
+
+    <!-- ================= PLAYLIST ================= -->
+    <h3 class="mb-3">🎧 Playlist nổi bật</h3>
+
+    <div class="row mb-4">
+        @if (ViewBag.Playlists != null)
+        {
+            foreach (var pl in ViewBag.Playlists)
+            {
+                <div class="col-md-3 mb-3">
+
+                    <a asp-controller="Playlists"
+                       asp-action="Details"
+                       asp-route-id="@pl.PlaylistId"
+                       style="text-decoration:none; color:white;">
+
+                        <div class="song-card">
+
+                            <img src="@pl.CoverImageUrl" alt="@pl.Title" />
+
+                            <div class="song-title">@pl.Title</div>
+                            <div class="song-artist">@pl.Description</div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+            }
+        }
+    </div>
+
+
+    <!-- ================= TOP SONG ================= -->
+    <h3 class="mb-3">🔥 Thịnh hành hôm nay</h3>
+
+    <div class="row mb-5">
+        @if (ViewBag.TopSongs != null)
+        {
+            foreach (var song in ViewBag.TopSongs)
+            {
+                <div class="col-md-3 mb-3">
+
+                    <div class="song-card">
+
+                        <img src="@song.CoverImageUrl" alt="@song.Title" />
+
+                        <button class="play-btn-card"
+                                onclick="playSong(@song.SongId)">
+                            ▶
+                        </button>
+
+                        <div class="song-title">@song.Title</div>
+                        <div class="song-artist">@song.Artist?.Name</div>
+
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+
+
+    <!-- ================= GENRE ================= -->
+    @if (ViewBag.Genres != null)
+    {
+        @foreach (var genre in ViewBag.Genres)
+        {
+            var songs = genre.Songs as List<Music_ASM.Models.Song>;
+
+            <h4 class="mt-4">@genre.Name</h4>
+
+            <div class="row mb-4">
+
+                @if (songs != null)
+                {
+                    foreach (var song in songs.Take(4))
+                    {
+                        <div class="col-md-3 mb-3">
+
+                            <div class="song-card">
+                                <img src="@song.CoverImageUrl" />
+
+                                <button class="play-btn-card"
+                                        onclick="playSong(@song.SongId)">
+                                    ▶
+                                </button>
+
+                                <div class="song-title">@song.Title</div>
+                                <div class="song-artist">@song.Artist?.Name</div>
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </div>
+        }
+    }
+
+</div>
