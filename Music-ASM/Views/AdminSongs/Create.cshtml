@@ -1,0 +1,19 @@
+﻿@model Music_ASM.Models.Song
+
+<h2>➕ Thêm bài hát</h2>
+
+<form asp-action="Create">
+    <input asp-for="Title" class="form-control mb-2" placeholder="Tên bài hát" />
+
+    <input asp-for="FilePath" class="form-control mb-2" placeholder="Link file mp3" />
+
+    <input asp-for="CoverImageUrl" class="form-control mb-2" placeholder="Ảnh bìa" />
+
+    <input asp-for="Duration" class="form-control mb-2" placeholder="Thời lượng (giây)" />
+
+    <select asp-for="ArtistId" asp-items="ViewBag.Artists" class="form-control mb-2"></select>
+
+    <select asp-for="GenreId" asp-items="ViewBag.Genres" class="form-control mb-2"></select>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+</form>

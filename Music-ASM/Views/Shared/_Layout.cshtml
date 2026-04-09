@@ -1,10 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Music_ASM</title>
-    
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Music_ASM.styles.css" asp-append-version="true" />
@@ -12,15 +13,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
-        /* CSS Tổng thể phong cách Dark Mode */
         body {
             background-color: #000;
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; 
+            /* ✅ FIX DUY NHẤT */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
-        /* 1. Sidebar bên trái */
         .sidebar {
             width: 260px;
             background-color: #000;
@@ -32,70 +33,214 @@
             display: flex;
             flex-direction: column;
         }
-        .nav-item {
-            color: #b3b3b3; text-decoration: none; font-weight: bold; padding: 12px 16px; 
-            border-radius: 4px; display: flex; align-items: center; transition: color 0.2s ease;
-        }
-        .nav-item:hover, .nav-item.active { color: #fff; }
-        .nav-item i { font-size: 1.2rem; margin-right: 16px; width: 24px; }
-        .divider { height: 1px; background-color: #282828; margin: 16px 16px; }
 
-        /* 2. Khu vực nội dung chính chứa @RenderBody() */
+        .nav-item {
+            color: #b3b3b3;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+
+            .nav-item:hover, .nav-item.active {
+                color: #fff;
+            }
+
+            .nav-item i {
+                font-size: 1.2rem;
+                margin-right: 16px;
+                width: 24px;
+            }
+
+        .divider {
+            height: 1px;
+            background-color: #282828;
+            margin: 16px 16px;
+        }
+
         .main-wrapper {
             margin-left: 260px;
             width: calc(100% - 260px);
-            height: calc(100vh - 90px);
+            /* ✅ FIX DUY NHẤT */
+            min-height: calc(100vh - 90px);
+            height: auto;
             background: linear-gradient(180deg, #2a2a2a 0%, #121212 100%);
             overflow-y: auto;
             border-radius: 8px;
             margin-top: 8px;
         }
 
-        /* Topbar (Header điều hướng) */
         .topbar {
-            position: sticky; top: 0; background: rgba(18, 18, 18, 0.8);
-            backdrop-filter: blur(10px); padding: 16px 32px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+            position: sticky;
+            top: 0;
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
         }
-        .btn-upgrade { background-color: #fff; color: #000; border-radius: 500px; font-weight: bold; padding: 8px 32px; text-decoration: none; }
-        .user-menu { background-color: #000; border-radius: 50px; padding: 4px; display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #282828; }
-        .user-menu img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
 
-        /* 3. Bottom Player (Thanh phát nhạc) */
-        .bottom-player {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 90px;
-            background-color: #181818; border-top: 1px solid #282828;
-            display: flex; justify-content: space-between; align-items: center; padding: 0 16px; z-index: 1000;
+        .btn-upgrade {
+            background-color: #fff;
+            color: #000;
+            border-radius: 500px;
+            font-weight: bold;
+            padding: 8px 32px;
+            text-decoration: none;
         }
-        .player-controls { display: flex; flex-direction: column; align-items: center; width: 40%; }
-        .control-buttons { display: flex; align-items: center; gap: 24px; color: #b3b3b3; margin-bottom: 8px; }
-        .btn-play-main { background-color: #fff; color: #000; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .progress-container { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #b3b3b3; }
-        .progress-bar-bg { flex-grow: 1; height: 4px; background-color: #4d4d4d; border-radius: 2px; }
-        .progress-bar-fill { width: 30%; height: 100%; background-color: #fff; border-radius: 2px; }
+
+        .user-menu {
+            background-color: #000;
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: 1px solid #282828;
+        }
+
+            .user-menu img {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+        .bottom-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background-color: #181818;
+            border-top: 1px solid #282828;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 1000;
+        }
+
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            color: #b3b3b3;
+            margin-bottom: 8px;
+        }
+
+        .btn-play-main {
+            background-color: #fff;
+            color: #000;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progress-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: #b3b3b3;
+        }
+
+        .progress-bar-bg {
+            flex-grow: 1;
+            height: 4px;
+            background-color: #4d4d4d;
+            border-radius: 2px;
+        }
+
+        .progress-bar-fill {
+            width: 30%;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #242424;
+            border-radius: 500px;
+            padding: 6px 15px;
+            width: 350px;
+        }
+
+            .search-box input {
+                background: transparent;
+                border: none;
+                outline: none;
+                color: #fff;
+                width: 100%;
+            }
     </style>
 </head>
+
 <body>
 
+    <!-- SIDEBAR -->
     <nav class="sidebar">
         <div class="mb-4 px-3">
-            <h3 class="fw-bold" style="color: #fff;"><i class="fab fa-spotify me-2" style="color: #1db954;"></i>Music-ASM</h3>
+            <h3 class="fw-bold" style="color: #fff;">
+                <i class="fab fa-spotify me-2" style="color: #1db954;"></i>Music-ASM
+            </h3>
         </div>
-        <a asp-controller="Home" asp-action="Index" class="nav-item active"><i class="fas fa-home"></i> Trang chủ</a>
-        <a href="#" class="nav-item"><i class="fas fa-search"></i> Tìm kiếm</a>
-        <a href="#" class="nav-item"><i class="fas fa-book-open"></i> Thư viện</a>
+
+        <a asp-controller="Home" asp-action="Index" class="nav-item active">
+            <i class="fas fa-home"></i> Trang chủ
+        </a>
+
+        <a asp-controller="Home" asp-action="Search" class="nav-item">
+            <i class="fas fa-search"></i> Tìm kiếm
+        </a>
+
+        <a asp-controller="Home" asp-action="Library" class="nav-item">
+            <i class="fas fa-book-open"></i> Thư viện
+        </a>
+
         <div class="divider"></div>
-        <a href="#" class="nav-item"><i class="fas fa-plus-square"></i> Tạo Playlist</a>
+
+        <a href="#" class="nav-item">
+            <i class="fas fa-plus-square"></i> Tạo Playlist
+        </a>
     </nav>
 
+    <!-- MAIN -->
     <main class="main-wrapper">
-        
+
+        <!-- TOPBAR -->
         <header class="topbar">
-            <div class="d-flex gap-2">
-                <button class="btn btn-dark rounded-circle" style="background: #0a0a0a;"><i class="fas fa-chevron-left"></i></button>
-                <button class="btn btn-dark rounded-circle" style="background: #0a0a0a;"><i class="fas fa-chevron-right"></i></button>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-dark rounded-circle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <form asp-controller="Home" asp-action="Search" method="get" class="search-box">
+                    <input type="text" name="keyword" placeholder="Bạn muốn nghe gì?" />
+                </form>
             </div>
 
+            <!-- LOGIN / USER -->
             <div class="d-flex align-items-center gap-3">
                 @if (!User.Identity.IsAuthenticated)
                 {
@@ -106,174 +251,48 @@
                 {
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-warning rounded-pill px-3 fw-bold">
-                            <i class="fas fa-cogs"></i> Quản lý ASM
-                        </a>
+                        <a href="/AdminSongs" class="nav-item">⚙️ Quản lý Songs</a>
                     }
-                    
+
+                    <!-- ✅ FIX DROPDOWN -->
                     <div class="dropdown">
                         <div class="user-menu" data-bs-toggle="dropdown">
-                            <img src="@(User.FindFirst("Avatar")?.Value ?? "/images/default-avatar.png")" alt="User">
-                            <span class="fw-bold fs-6 text-white pe-2">@User.Identity.Name</span>
-                            <i class="fas fa-caret-down pe-2 text-white"></i>
+                            <img src="@(User.FindFirst("Avatar")?.Value ?? "/images/default-avatar.png")">
+                            <span class="fw-bold text-white">@User.Identity.Name</span>
+                            <i class="fas fa-caret-down text-white"></i>
                         </div>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2 shadow-lg">
+
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2">
                             <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
+                                    Đăng xuất
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 }
             </div>
+
         </header>
 
+        <!-- CONTENT -->
         <div class="p-4">
             @RenderBody()
         </div>
 
     </main>
 
+    <!-- PLAYER -->
     <footer class="bottom-player">
-
-        <!-- LEFT: INFO -->
-        <div class="d-flex align-items-center" style="width: 30%;">
-            <img id="player-cover" src="/images/default-cover.jpg"
-                 style="width: 56px; height: 56px; border-radius: 4px; object-fit: cover; margin-right: 16px;">
-            <div>
-                <div id="player-title" class="text-white fw-bold" style="font-size: 0.875rem;">
-                    Chưa phát bài nào
-                </div>
-                <div id="player-artist" style="font-size: 0.75rem; color: #b3b3b3;">
-                    ---
-                </div>
-            </div>
-        </div>
-
-        <!-- CENTER: CONTROL -->
-        <div class="player-controls">
-            <div class="control-buttons">
-                <i class="fas fa-step-backward fs-5" onclick="prevSong()"></i>
-
-                <div class="btn-play-main" onclick="togglePlay()">
-                    <i id="play-icon" class="fas fa-play"></i>
-                </div>
-
-                <i class="fas fa-step-forward fs-5" onclick="nextSong()"></i>
-            </div>
-
-            <div class="progress-container">
-                <span id="current-time">0:00</span>
-
-                <div class="progress-bar-bg" onclick="seek(event)">
-                    <div id="progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
-                </div>
-
-                <span id="duration">0:00</span>
-            </div>
-        </div>
-
-        <!-- RIGHT: VOLUME -->
-        <div class="d-flex justify-content-end align-items-center gap-3"
-             style="width: 30%; color: #b3b3b3;">
-            <i class="fas fa-volume-up"></i>
-
-            <input type="range" id="volume"
-                   min="0" max="1" step="0.1" value="1"
-                   style="width: 100px;">
-        </div>
-
+        <div>Chưa phát bài nào</div>
     </footer>
-
-    <audio id="audio-player"></audio>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    <script>
-        let audio = document.getElementById("audio-player");
-        let isPlaying = false;
 
-        // PLAY SONG (AJAX)
-        function playSong(id) {
-            fetch(`/Home/PlaySong?id=${id}`)
-                .then(res => res.json())
-                .then(data => {
+    @RenderSection("Scripts", required: false)
 
-                    audio.src = data.filePath;
-                    audio.play();
-                    isPlaying = true;
-
-                    // Update UI
-                    document.getElementById("player-title").innerText = data.title;
-                    document.getElementById("player-artist").innerText = data.artist;
-                    document.getElementById("player-cover").src = data.cover;
-
-                    document.getElementById("play-icon").classList.remove("fa-play");
-                    document.getElementById("play-icon").classList.add("fa-pause");
-                });
-        }
-
-        // PLAY / PAUSE
-        function togglePlay() {
-            if (!audio.src) return;
-
-            if (audio.paused) {
-                audio.play();
-                isPlaying = true;
-                setPlayIcon(true);
-            } else {
-                audio.pause();
-                isPlaying = false;
-                setPlayIcon(false);
-            }
-        }
-
-        function setPlayIcon(playing) {
-            let icon = document.getElementById("play-icon");
-            icon.classList.remove("fa-play", "fa-pause");
-            icon.classList.add(playing ? "fa-pause" : "fa-play");
-        }
-
-        // PROGRESS BAR UPDATE
-        audio.addEventListener("timeupdate", () => {
-            if (!audio.duration) return;
-
-            let percent = (audio.currentTime / audio.duration) * 100;
-            document.getElementById("progress-bar").style.width = percent + "%";
-
-            document.getElementById("current-time").innerText = formatTime(audio.currentTime);
-            document.getElementById("duration").innerText = formatTime(audio.duration);
-        });
-
-        // SEEK
-        function seek(e) {
-            let bar = e.currentTarget;
-            let rect = bar.getBoundingClientRect();
-            let percent = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = percent * audio.duration;
-        }
-
-        // FORMAT TIME
-        function formatTime(seconds) {
-            let m = Math.floor(seconds / 60);
-            let s = Math.floor(seconds % 60);
-            return m + ":" + (s < 10 ? "0" + s : s);
-        }
-
-        // VOLUME
-        document.getElementById("volume").addEventListener("input", function () {
-            audio.volume = this.value;
-        });
-
-        // AUTO NEXT (demo)
-        function nextSong() {
-            alert("Bạn có thể làm playlist để next real 😎");
-        }
-
-        function prevSong() {
-            alert("Chưa có danh sách 😎");
-        }
-    </script>
 </body>
 </html>

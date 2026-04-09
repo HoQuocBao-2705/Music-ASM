@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Music_ASM.Models.Song>
+
+<h2>🎵 Quản lý bài hát</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">+ Thêm bài hát</a>
+
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Ảnh</th>
+            <th>Tên</th>
+            <th>Nghệ sĩ</th>
+            <th>Thể loại</th>
+            <th>Lượt nghe</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var song in Model)
+        {
+            <tr>
+                <td><img src="@song.CoverImageUrl" width="60" /></td>
+                <td>@song.Title</td>
+                <td>@song.Artist?.Name</td>
+                <td>@song.Genre?.Name</td>
+                <td>@song.ListenCount</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@song.SongId" class="btn btn-warning btn-sm">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@song.SongId" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Xóa bài này?')">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

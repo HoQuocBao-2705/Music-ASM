@@ -1,0 +1,35 @@
+﻿@model List<Music_ASM.Models.Song>
+
+@{
+    ViewData["Title"] = "Thư viện";
+}
+
+<h2 class="text-white mb-4">🎵 Thư viện</h2>
+
+<div class="row">
+
+    @foreach (var song in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="song-card position-relative">
+
+                <!-- ẢNH -->
+                <img src="@(song.CoverImageUrl ?? "/images/default.jpg")" />
+
+                <!-- TÊN BÀI -->
+                <div class="song-title">@song.Title</div>
+
+                <!-- CA SĨ -->
+                <div class="song-artist">@song.Artist.Name</div>
+
+                <!-- PLAY -->
+                <button class="play-btn-card"
+                        onclick="playSong(@song.SongId)">
+                    <i class="fas fa-play"></i>
+                </button>
+
+            </div>
+        </div>
+    }
+
+</div>

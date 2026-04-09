@@ -1,0 +1,38 @@
+﻿@model List<Music_ASM.Models.Song>
+
+@{
+    ViewData["Title"] = "Tìm kiếm";
+}
+
+<h3 class="mb-4">🔍 Kết quả cho: "@ViewBag.Keyword"</h3>
+
+@if (!Model.Any())
+{
+    <p>Không tìm thấy bài hát nào 😢</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var song in Model)
+        {
+            <div class="col-md-3 mb-4">
+
+                <div class="song-card position-relative">
+
+                    <img src="@song.CoverImageUrl" />
+
+                    <!-- PLAY BUTTON -->
+                    <button class="play-btn-card"
+                            onclick="playSong(@song.SongId)">
+                        ▶
+                    </button>
+
+                    <div class="song-title">@song.Title</div>
+                    <div class="song-artist">@song.Artist?.Name</div>
+
+                </div>
+
+            </div>
+        }
+    </div>
+}

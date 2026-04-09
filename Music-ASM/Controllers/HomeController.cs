@@ -16,19 +16,40 @@ namespace Music_ASM.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // 🎧 Top Songs
             var topSongs = await _context.Songs
                 .Include(s => s.Artist)
                 .OrderByDescending(s => s.ListenCount)
                 .Take(10)
                 .ToListAsync();
 
-            ViewBag.Genres = await _context.Genres.ToListAsync();
+            // 📂 Playlist
+            var playlists = await _context.Playlists.ToListAsync();
 
-            return View(topSongs);
+            // 🎵 Genres + Songs
+            var genres = await _context.Genres
+                .Select(g => new
+                {
+                    g.GenreId,
+                    g.Name,
+                    Songs = _context.Songs
+                        .Include(s => s.Artist)
+                        .Where(s => s.GenreId == g.GenreId)
+                        .Take(4)
+                        .ToList()
+                })
+                .ToListAsync();
+
+            // 🔥 Gán ViewBag đúng với View
+            ViewBag.TopSongs = topSongs;
+            ViewBag.Playlists = playlists;
+            ViewBag.Genres = genres;
+
+            return View();
         }
 
         // 🔥 API PLAY (AJAX)
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> PlaySong(int id)
         {
@@ -71,6 +92,14 @@ namespace Music_ASM.Controllers
                 .ToListAsync();
 
             ViewBag.Keyword = keyword;
+
+            return View(songs);
+        }
+        public IActionResult Library()
+        {
+            var songs = _context.Songs
+                .Include(s => s.Artist)   // ⚠️ BẮT BUỘC để lấy tên ca sĩ
+                .ToList();
 
             return View(songs);
         }
