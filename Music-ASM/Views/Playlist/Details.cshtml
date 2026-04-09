@@ -1,0 +1,23 @@
+﻿@model Music_ASM.Models.Playlist
+
+<h2>@Model.Title</h2>
+
+<div class="row">
+    @foreach (var item in Model.PlaylistSongs)
+    {
+        <div class="col-md-3">
+            <div class="song-card">
+
+                <img src="@item.Song.CoverImageUrl" style="width:100%" />
+
+                <div class="song-title">@item.Song.Title</div>
+                <div class="song-artist">@item.Song.Artist.Name</div>
+
+                <button onclick="playSong(@item.Song.SongId)" class="btn btn-success mt-2">
+                    ▶ Play
+                </button>
+
+            </div>
+        </div>
+    }
+</div>

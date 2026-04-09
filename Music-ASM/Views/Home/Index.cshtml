@@ -1,105 +1,122 @@
-﻿@{
+﻿@using Music_ASM.Models
+@model HomeViewModel
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Trang chủ";
 }
 
 <div class="container-fluid">
 
-    <!-- ================= PLAYLIST ================= -->
-    <h3 class="mb-3">🎧 Playlist nổi bật</h3>
-
+    <!-- 🎧 Playlist nổi bật -->
+    <h3 class="mb-3">📁 Playlist nổi bật</h3>
     <div class="row mb-4">
-        @if (ViewBag.Playlists != null)
+        @if (Model.Playlists != null && Model.Playlists.Any())
         {
-            foreach (var pl in ViewBag.Playlists)
+            foreach (var playlist in Model.Playlists)
             {
+                // Lấy bài hát đầu tiên trong playlist để làm ảnh bìa (nếu có)
+                var firstSong = playlist.PlaylistSongs?.FirstOrDefault()?.Song;
+            
                 <div class="col-md-3 mb-3">
-
-                    <a asp-controller="Playlists"
-                       asp-action="Details"
-                       asp-route-id="@pl.PlaylistId"
-                       style="text-decoration:none; color:white;">
-
-                        <div class="song-card">
-
-                            <img src="@pl.CoverImageUrl" alt="@pl.Title" />
-
-                            <div class="song-title">@pl.Title</div>
-                            <div class="song-artist">@pl.Description</div>
-
-                        </div>
-
-                    </a>
-
+                    <div class="playlist-card">
+                        <a asp-controller="Playlist"
+                               asp-action="Details"
+                               asp-route-id="@playlist.PlaylistId"
+                               style="text-decoration: none; color: inherit;">
+                        
+                            <div class="card h-100" style="background-color: #181818; color: #ffffff; border: none; border-radius: 8px;">
+                                <img src="@(firstSong?.CoverImageUrl ?? playlist.CoverImageUrl ?? "/images/default-playlist.jpg")"
+                                     class="card-img-top"
+                                     alt="@playlist.Title"
+                                     style="height: 200px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;" />
+                                <div class="card-body">
+                                    <h5 class="card-title font-weight-bold">@playlist.Title</h5>
+                                
+                                    <p class="card-text" style="color: #b3b3b3;">
+                                        @(playlist.PlaylistSongs?.Count ?? 0) bài hát
+                                    </p>
+                                
+                                    @if (!string.IsNullOrEmpty(playlist.Description))
+                                    {
+                                        <small style="color: #b3b3b3;">@playlist.Description</small>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             }
         }
+        else
+        {
+            <div class="col-12">
+                <p style="color: #b3b3b3;">
+                    Chưa có playlist nào.
+                    <a asp-controller="Playlist" asp-action="Create" class="text-white">Tạo playlist ngay</a>
+                </p>
+            </div>
+        }
     </div>
 
-
-    <!-- ================= TOP SONG ================= -->
+    <!-- 🔥 Thịnh hành hôm nay -->
     <h3 class="mb-3">🔥 Thịnh hành hôm nay</h3>
 
     <div class="row mb-5">
-        @if (ViewBag.TopSongs != null)
+        @if (Model.TopSongs != null && Model.TopSongs.Any())
         {
-            foreach (var song in ViewBag.TopSongs)
+            foreach (var song in Model.TopSongs)
             {
                 <div class="col-md-3 mb-3">
-
                     <div class="song-card">
-
                         <img src="@song.CoverImageUrl" alt="@song.Title" />
-
-                        <button class="play-btn-card"
-                                onclick="playSong(@song.SongId)">
-                            ▶
-                        </button>
-
+                        <button class="play-btn-card" onclick="playSong(@song.SongId)">▶</button>
                         <div class="song-title">@song.Title</div>
                         <div class="song-artist">@song.Artist?.Name</div>
-
+                        <!-- ✅ SỬA Ở ĐÂY -->
+                        <a asp-controller="Playlist"
+                               asp-action="Choose"
+                               asp-route-songId="@song.SongId"
+                               class="btn btn-sm btn-warning mt-2">
+                            + Playlist
+                        </a>
                     </div>
-
                 </div>
             }
         }
     </div>
 
-
-    <!-- ================= GENRE ================= -->
-    @if (ViewBag.Genres != null)
+    <!-- 🎵 Các thể loại nhạc -->
+    @if (Model.Genres != null)
     {
-        @foreach (var genre in ViewBag.Genres)
+        foreach (var genre in Model.Genres)
         {
             var songs = genre.Songs as List<Music_ASM.Models.Song>;
 
             <h4 class="mt-4">@genre.Name</h4>
 
             <div class="row mb-4">
-
-                @if (songs != null)
+                @if (songs != null && songs.Any())
                 {
                     foreach (var song in songs.Take(4))
                     {
                         <div class="col-md-3 mb-3">
-
                             <div class="song-card">
                                 <img src="@song.CoverImageUrl" />
-
-                                <button class="play-btn-card"
-                                        onclick="playSong(@song.SongId)">
-                                    ▶
-                                </button>
-
+                                <button class="play-btn-card" onclick="playSong(@song.SongId)">▶</button>
                                 <div class="song-title">@song.Title</div>
                                 <div class="song-artist">@song.Artist?.Name</div>
+                                <!-- ✅ SỬA Ở ĐÂY -->
+                                <a asp-controller="Playlist"
+                                       asp-action="Choose"
+                                       asp-route-songId="@song.SongId"
+                                       class="btn btn-sm btn-warning mt-2">
+                                    + Playlist
+                                </a>
                             </div>
-
                         </div>
                     }
                 }
-
             </div>
         }
     }

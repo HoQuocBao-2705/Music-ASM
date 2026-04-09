@@ -198,6 +198,31 @@
             input[type=range] {
                 cursor: pointer;
             }
+            /* Avatar chữ cái đầu */
+            .avatar-initials {
+                transition: all 0.2s ease;
+            }
+
+            .user-menu:hover .avatar-initials {
+                transform: scale(1.05);
+            }
+
+            /* Dropdown menu style */
+            .dropdown-menu-dark {
+                background-color: #282828;
+                border: 1px solid #3e3e3e;
+                border-radius: 8px;
+            }
+
+                .dropdown-menu-dark .dropdown-item {
+                    color: #b3b3b3;
+                    transition: all 0.2s;
+                }
+
+                    .dropdown-menu-dark .dropdown-item:hover {
+                        background-color: #3e3e3e;
+                        color: #fff;
+                    }
     </style>
 </head>
 
@@ -224,7 +249,7 @@
 
         <div class="divider"></div>
 
-        <a href="#" class="nav-item">
+        <a asp-controller="Playlist" asp-action="Index" class="nav-item">
             <i class="fas fa-plus-square"></i> Tạo Playlist
         </a>
     </nav>
@@ -264,18 +289,37 @@
                     }
 
                     <div class="dropdown">
-                        <div class="user-menu" data-bs-toggle="dropdown">
-                            <img src="@(User.FindFirst("Avatar")?.Value ?? "/images/default-avatar.png")">
-                            <span class="fw-bold text-white">@User.Identity.Name</span>
-                            <i class="fas fa-caret-down text-white"></i>
+                        <div class="user-menu" data-bs-toggle="dropdown" style="cursor: pointer;">
+                            @{
+                                // Lấy thông tin từ claims
+                                var fullName = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "User";
+                                var username = User.Identity?.Name ?? "User";
+                                var avatarUrl = User.FindFirst("Avatar")?.Value;
+                                var initials = Music_ASM.Helpers.UserHelper.GetInitials(fullName);
+                                var avatarColor = Music_ASM.Helpers.UserHelper.GetAvatarColor(fullName);
+                            }
+        
+                            @if (!string.IsNullOrEmpty(avatarUrl) && avatarUrl != "/images/default-avatar.png")
+                            {
+                                <img src="@avatarUrl" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="avatar-initials" style="width: 32px; height: 32px; border-radius: 50%; background-color: @avatarColor; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; color: white;">
+                                    @initials
+                                </div>
+                            }
+                            <span class="fw-bold text-white ms-2">@username</span>
+                            <i class="fas fa-caret-down text-white ms-1"></i>
                         </div>
 
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2">
-                            <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2" style="background-color: #282828; border: 1px solid #3e3e3e; border-radius: 8px;">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Hồ sơ</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-crown me-2"></i>Nâng cấp Premium</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
-                                    Đăng xuất
+                                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
                                 </a>
                             </li>
                         </ul>

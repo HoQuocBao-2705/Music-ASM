@@ -1,0 +1,120 @@
+﻿@using Music_ASM.Models
+@model List<Playlist>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chọn Playlist";
+    int songId = ViewBag.SongId;
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4" style="color: #fff;">📁 Chọn playlist để thêm bài hát</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var playlist in Model)
+            {
+                var firstSong = playlist.PlaylistSongs?.FirstOrDefault()?.Song;
+                
+                <div class="col-md-4 col-lg-3 mb-3">
+                    <div class="playlist-option-card" style="background-color: #181818; border-radius: 8px; padding: 12px; transition: all 0.2s;">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="@(firstSong?.CoverImageUrl ?? playlist.CoverImageUrl ?? "/images/default-playlist.jpg")"
+                                 alt="@playlist.Title"
+                                 style="width: 56px; height: 56px; object-fit: cover; border-radius: 8px;" />
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0" style="color: #fff;">@playlist.Title</h6>
+                                <small style="color: #b3b3b3;">
+                                    @(playlist.PlaylistSongs?.Count ?? 0) bài hát
+                                </small>
+                            </div>
+                            <button onclick="addToPlaylist(@playlist.PlaylistId, @songId)"
+                                    class="btn btn-success btn-sm rounded-pill px-3">
+                                ➕ Thêm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="mt-4 d-flex gap-3">
+            <a asp-controller="Playlist" asp-action="Create" class="btn btn-light rounded-pill px-4">
+                ➕ Tạo playlist mới
+            </a>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary rounded-pill px-4">
+                🔙 Quay lại
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5" style="background-color: #181818; border-radius: 12px;">
+            <i class="fas fa-folder-open" style="font-size: 64px; color: #b3b3b3;"></i>
+            <h4 class="mt-3" style="color: #fff;">Bạn chưa có playlist nào</h4>
+            <p style="color: #b3b3b3;">Hãy tạo playlist đầu tiên để lưu bài hát yêu thích</p>
+            <a asp-controller="Playlist" asp-action="Create" class="btn btn-success rounded-pill px-4 mt-2">
+                ➕ Tạo playlist ngay
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .playlist-option-card:hover {
+        background-color: #282828 !important;
+        transform: translateY(-2px);
+        cursor: pointer;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function addToPlaylist(playlistId, songId) {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerText;
+            btn.innerText = '⏳ ...';
+            btn.disabled = true;
+
+            fetch(`/Playlist/AddSong?playlistId=${playlistId}&songId=${songId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    btn.innerText = '✅ Đã thêm!';
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-secondary');
+                    setTimeout(() => {
+                        window.location.href = `/Playlist/Details/${playlistId}`;
+                    }, 1000);
+                } else if (response.status === 409) {
+                    btn.innerText = '⚠️ Đã có';
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                        btn.classList.add('btn-success');
+                        btn.classList.remove('btn-secondary');
+                    }, 2000);
+                } else {
+                    btn.innerText = '❌ Lỗi';
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btn.innerText = '❌ Lỗi';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            });
+        }
+    </script>
+}

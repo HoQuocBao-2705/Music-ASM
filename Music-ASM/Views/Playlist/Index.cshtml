@@ -1,0 +1,21 @@
+﻿@model List<Music_ASM.Models.Playlist>
+
+<h2>🎵 Playlist của bạn</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">+ Tạo Playlist</a>
+
+<div class="row">
+    @foreach (var p in Model)
+    {
+        <div class="col-md-3">
+            <div class="song-card">
+                <img src="@p.CoverImageUrl" />
+                <div class="song-title">@p.Title</div>
+
+                <a asp-action="Details" asp-route-id="@p.PlaylistId" class="btn btn-sm btn-light mt-2">
+                    Xem
+                </a>
+            </div>
+        </div>
+    }
+</div>

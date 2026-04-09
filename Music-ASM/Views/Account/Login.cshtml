@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Đăng nhập hệ thống";
-    Layout = null; // Bỏ layout chung để form đăng nhập đứng độc lập
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -54,6 +54,13 @@
             </div>
         }
 
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success text-center" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
         <form asp-controller="Account" asp-action="Login" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label fw-bold">Tài khoản</label>
@@ -69,6 +76,11 @@
         </form>
         
         <div class="text-center mt-3">
+            <span class="text-muted">Chưa có tài khoản?</span>
+            <a href="/Account/Register" class="text-decoration-none fw-bold" style="color: #1db954;">Đăng ký ngay</a>
+        </div>
+        
+        <div class="text-center mt-2">
             <a href="/" class="text-decoration-none text-muted">Về trang chủ</a>
         </div>
     </div>

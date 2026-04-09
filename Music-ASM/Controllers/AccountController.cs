@@ -20,7 +20,6 @@ namespace Music_ASM.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            // Nếu đã đăng nhập rồi thì đá về trang chủ
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
@@ -32,23 +31,33 @@ namespace Music_ASM.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            // Tìm user trong Database và lấy kèm thông tin Role
             var user = await _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
 
             if (user != null)
             {
-                // Khởi tạo các Claims (Thông tin lưu trữ trong phiên đăng nhập)
-                var claims = new List<Claim>
+                // ⭐ Xử lý FullName: nếu là admin thì hiển thị "Admin", nếu không thì dùng FullName hoặc Username
+                string fullName;
+                if (user.Role?.RoleName == "Admin")
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Role, user.Role.RoleName), // Phân quyền ít nhất 2 role ở đây
-                    new Claim("Avatar", user.AvatarUrl ?? "/images/default-avatar.png")
-                };
+                    fullName = "Admin";
+                }
+                else
+                {
+                    fullName = string.IsNullOrEmpty(user.FullName) ? user.Username : user.FullName;
+                }
 
-                // ... (phần code kiểm tra user ở trên giữ nguyên) ...
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim("FullName", fullName),
+            new Claim(ClaimTypes.Email, user.Email ?? ""),
+            new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User"),
+            new Claim("Avatar", user.AvatarUrl ?? ""),
+            new Claim("IsPremium", user.IsPremium.ToString())
+        };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties { IsPersistent = true };
@@ -58,12 +67,9 @@ namespace Music_ASM.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                // BỎ đoạn check Admin chuyển sang trang Admin.
-                // Cho TẤT CẢ đều quay về Trang chủ sau khi đăng nhập thành công.
                 return RedirectToAction("Index", "Home");
             }
 
-            // Báo lỗi nếu sai tài khoản
             ViewBag.Error = "Tài khoản hoặc mật khẩu không chính xác!";
             return View();
         }
@@ -81,6 +87,7 @@ namespace Music_ASM.Controllers
         {
             return View();
         }
+
         // GET: Hiển thị form đăng ký
         [HttpGet]
         public IActionResult Register()
@@ -96,7 +103,7 @@ namespace Music_ASM.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(string username, string password, string fullname, string email)
         {
-            // Yêu cầu Y2: Validate dữ liệu - Kiểm tra xem tài khoản hoặc email đã tồn tại chưa
+            // Kiểm tra xem tài khoản hoặc email đã tồn tại chưa
             bool isExists = await _context.Users.AnyAsync(u => u.Username == username || u.Email == email);
             if (isExists)
             {
@@ -109,11 +116,11 @@ namespace Music_ASM.Controllers
             {
                 Username = username,
                 PasswordHash = password, // Lưu ý: Dự án thực tế nên mã hóa MD5/BCrypt
-                FullName = fullname,
+                FullName = fullname,     // ← Lưu họ tên đầy đủ
                 Email = email,
-                RoleId = 2,
+                RoleId = 2,              // User role
                 IsPremium = false,
-                AvatarUrl = "/images/default-avatar.png",
+                AvatarUrl = null,        // ← Để null để dùng avatar chữ cái đầu
                 CreatedAt = DateTime.Now
             };
 

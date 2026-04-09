@@ -1,0 +1,16 @@
+﻿@model Music_ASM.Models.Playlist
+
+<h2>➕ Tạo Playlist</h2>
+
+<form asp-action="Create" method="post">
+
+    <input asp-for="Title" class="form-control mb-2" placeholder="Tên playlist" />
+
+    <input asp-for="Description" class="form-control mb-2" placeholder="Mô tả" />
+
+    @* <input asp-for="CoverImageUrl" class="form-control mb-2" placeholder="Ảnh bìa" /> *@
+    <input type="file" name="imageFile" class="form-control mb-2" accept="image/*" />
+
+    <button type="submit" class="btn btn-success">Tạo</button>
+
+</form>

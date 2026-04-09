@@ -16,17 +16,20 @@ namespace Music_ASM.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // 🎧 Top Songs
+            // 📁 Lấy danh sách playlist (có kèm bài hát đầu tiên để hiển thị ảnh bìa)
+            var playlists = await _context.Playlists
+                .Include(p => p.PlaylistSongs)
+                    .ThenInclude(ps => ps.Song)
+                .ToListAsync();
+
+            // 🔥 Top Songs (Thịnh hành)
             var topSongs = await _context.Songs
                 .Include(s => s.Artist)
                 .OrderByDescending(s => s.ListenCount)
                 .Take(10)
                 .ToListAsync();
 
-            // 📂 Playlist
-            var playlists = await _context.Playlists.ToListAsync();
-
-            // 🎵 Genres + Songs
+            // 🎵 Genres + Songs (Thể loại)
             var genres = await _context.Genres
                 .Select(g => new
                 {
@@ -40,12 +43,14 @@ namespace Music_ASM.Controllers
                 })
                 .ToListAsync();
 
-            // 🔥 Gán ViewBag đúng với View
-            ViewBag.TopSongs = topSongs;
-            ViewBag.Playlists = playlists;
-            ViewBag.Genres = genres;
+            var model = new HomeViewModel
+            {
+                Playlists = playlists,  // ← Gán danh sách playlist
+                TopSongs = topSongs,
+                Genres = genres.Cast<dynamic>().ToList()
+            };
 
-            return View();
+            return View(model);
         }
 
         // 🔥 API PLAY (AJAX)

@@ -1,6 +1,18 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\songs\1697707543908_300.jpg
+wwwroot\images\songs\2ced2efd-9a2b-42f7-a08c-a514f73d62cf.jpg
+wwwroot\images\songs\896129ce-26f6-4cea-b4ba-b0b0d9169f70.webp
+wwwroot\images\songs\a71a258a-55e1-4724-82ce-b4bb3a30f8f9.jpg
+wwwroot\images\songs\artworks-SulYyzvm47QgVmqH-yL2nCw-t500x500.jpg
 wwwroot\images\songs\artworks-zmL13yWyzgXiXSEf-GZMRqQ-t500x500.jpg
+wwwroot\images\songs\cc8d1784-7200-4cc6-9126-103e9af65130.jpg
+wwwroot\images\songs\db3ef1a0-3ca5-45b6-a1d5-9205da8dad47.jpg
+wwwroot\images\songs\eb9f22c0-440c-4f03-a933-d21de2ea9b77.jpg
+wwwroot\images\songs\f2357f5e-f97d-4dd6-8b78-2b37cd601a4e.jpg
+wwwroot\images\songs\hq720.jpg
+wwwroot\images\songs\Ordinary-Alex-Warren-MP3-Download.jpg.webp
+wwwroot\images\songs\tải xuống.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -62,9 +74,19 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\music\09ce2bde-9f44-4ff8-a9c6-7dc264f73e57.mp3
+wwwroot\music\370e920e-b0b9-490a-9dae-e67e2b22d49b.mp3
+wwwroot\music\4c10e765-d696-4f6a-96d7-a8aa95f711e5.mp3
 wwwroot\music\6c1d2414-5fc5-4f0c-a192-acc7d7ed623d.mp3
+wwwroot\music\a137ece5-59fe-4654-9349-32b96d61db49.mp3
+wwwroot\music\Chìm Sâu.mp3
+wwwroot\music\CHẠY NGAY ĐI.mp3
+wwwroot\music\e1f7f9a3-e1fa-4ad8-b110-8267859cda92.mp3
+wwwroot\music\e382c336-bc74-4f47-a5fa-177cf995f781.mp3
+wwwroot\music\Exit Sign.mp3
 wwwroot\music\NNCS.mp3
 wwwroot\music\Ordinary.mp3
+wwwroot\music\Đen - Lối Nhỏ ft. Phương Anh Đào (MV).mp3
 wwwroot\music\Đừng Làm Trái Tim Anh Đau (Remix Instrumental).mp3
 D:\Music-ASM\Music-ASM\wwwroot\lib\jquery\LICENSE.txt
 D:\Music-ASM\Music-ASM\wwwroot\lib\jquery\dist\jquery.slim.min.map
