@@ -51,26 +51,20 @@ namespace Music_ASM.Controllers
         // 🔥 API PLAY (AJAX)
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> PlaySong(int id)
+        public IActionResult PlaySong(int id)
         {
-            // Tăng lượt nghe bằng SQL (chuẩn)
-            await _context.Database.ExecuteSqlRawAsync(
-                "UPDATE Songs SET ListenCount = ListenCount + 1 WHERE SongId = {0}", id);
-
-            var song = await _context.Songs
+            var song = _context.Songs
                 .Include(s => s.Artist)
-                .FirstOrDefaultAsync(s => s.SongId == id);
+                .FirstOrDefault(s => s.SongId == id);
 
             if (song == null) return NotFound();
 
             return Json(new
             {
-                songId = song.SongId,
+                filePath = song.FilePath,
                 title = song.Title,
                 artist = song.Artist.Name,
-                filePath = song.FilePath,
-                cover = song.CoverImageUrl,
-                listenCount = song.ListenCount
+                cover = song.CoverImageUrl
             });
         }
         [HttpGet]

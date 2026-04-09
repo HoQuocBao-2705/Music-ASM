@@ -1,0 +1,12 @@
+﻿@model Music_ASM.Models.Artist
+
+<h2>Thêm Nghệ sĩ</h2>
+
+<form asp-action="CreateArtist" method="post">
+    <div class="mb-3">
+        <label>Tên nghệ sĩ</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm</button>
+</form>

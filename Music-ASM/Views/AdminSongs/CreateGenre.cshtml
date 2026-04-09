@@ -1,0 +1,12 @@
+﻿@model Music_ASM.Models.Genre
+
+<h2>Thêm Thể loại</h2>
+
+<form asp-action="CreateGenre" method="post">
+    <div class="mb-3">
+        <label>Tên thể loại</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm</button>
+</form>

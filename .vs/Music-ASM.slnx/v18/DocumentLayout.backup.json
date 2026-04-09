@@ -3,32 +3,72 @@
   "WorkspaceRootPath": "D:\\Music-ASM\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\adminsongscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\controllers\\adminsongscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\home\\library.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\home\\library.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\models\\song.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\models\\song.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\songscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\controllers\\songscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\home\\search.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\home\\search.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\artists.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\artists.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\models\\musicasmdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\models\\musicasmdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\genres.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\genres.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\creategenre.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\creategenre.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\adminsongs\\createartist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\adminsongs\\createartist.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\home\\library.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\home\\library.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\playlists\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\playlists\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\home\\search.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\home\\search.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,20 +79,8 @@
       "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\adminsongscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\controllers\\adminsongscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\playlists\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\views\\playlists\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\playlistscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -61,14 +89,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\models\\musicasmdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\models\\musicasmdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\controllers\\songscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|solutionrelative:music-asm\\controllers\\songscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{920290B3-78DF-2615-9933-C73D59803A0F}|Music-ASM\\Music-ASM.csproj|d:\\music-asm\\music-asm\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -86,50 +106,227 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 3,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Library.cshtml",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Library.cshtml",
-              "RelativeDocumentMoniker": "Music-ASM\\Views\\Home\\Library.cshtml",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Library.cshtml",
-              "RelativeToolTip": "Music-ASM\\Views\\Home\\Library.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-09T09:06:21.297Z",
+              "DocumentIndex": 3,
+              "Title": "Song.cs",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Models\\Song.cs",
+              "RelativeDocumentMoniker": "Music-ASM\\Models\\Song.cs",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Models\\Song.cs",
+              "RelativeToolTip": "Music-ASM\\Models\\Song.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-09T15:43:09.13Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Music-ASM\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Music-ASM\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAMAAAAAAAAAAAAAAANkAAAAMAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Create.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Create.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Create.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-26T17:50:22.035Z",
+              "WhenOpened": "2026-04-09T06:24:27.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdminSongsController.cs",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\AdminSongsController.cs",
+              "RelativeDocumentMoniker": "Music-ASM\\Controllers\\AdminSongsController.cs",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Controllers\\AdminSongsController.cs",
+              "RelativeToolTip": "Music-ASM\\Controllers\\AdminSongsController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAwwFYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-09T06:23:49.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Artists.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Artists.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Artists.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Artists.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Artists.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-09T14:50:17.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-09T06:24:45.147Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "SongsController.cs",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\SongsController.cs",
+              "RelativeDocumentMoniker": "Music-ASM\\Controllers\\SongsController.cs",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Controllers\\SongsController.cs",
+              "RelativeToolTip": "Music-ASM\\Controllers\\SongsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T01:01:33.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Music-ASM\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Music-ASM\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAYwEoAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T17:23:08.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CreateGenre.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\CreateGenre.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\CreateGenre.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\CreateGenre.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\CreateGenre.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-09T14:50:41.776Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Index.cshtml",
               "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Index.cshtml",
               "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Index.cshtml",
               "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAABkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-09T06:24:15.12Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAACcAAAAAAAAAAADwv2oAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-26T17:23:38.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "MusicAsmDbContext.cs",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Models\\MusicAsmDbContext.cs",
+              "RelativeDocumentMoniker": "Music-ASM\\Models\\MusicAsmDbContext.cs",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Models\\MusicAsmDbContext.cs",
+              "RelativeToolTip": "Music-ASM\\Models\\MusicAsmDbContext.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAYwLoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T16:17:04.994Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAOkAAAAAAAAAAAArwAIBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-26T17:50:22.035Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CreateArtist.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\CreateArtist.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\CreateArtist.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\CreateArtist.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\CreateArtist.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-09T14:50:01.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Genres.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Genres.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Genres.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Genres.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Genres.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-09T14:51:03.163Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Library.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Library.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\Home\\Library.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Library.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\Home\\Library.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-09T09:06:21.297Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Playlists\\Details.cshtml",
+              "RelativeDocumentMoniker": "Music-ASM\\Views\\Playlists\\Details.cshtml",
+              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Playlists\\Details.cshtml",
+              "RelativeToolTip": "Music-ASM\\Views\\Playlists\\Details.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAYwGQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-08T02:06:46.034Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Program.cs",
               "RelativeDocumentMoniker": "Music-ASM\\Program.cs",
@@ -137,38 +334,11 @@
               "RelativeToolTip": "Music-ASM\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T16:25:09.051Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-26T16:25:09.051Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
-              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Edit.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-09T06:24:45.147Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Create.cshtml",
-              "RelativeDocumentMoniker": "Music-ASM\\Views\\AdminSongs\\Create.cshtml",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\AdminSongs\\Create.cshtml",
-              "RelativeToolTip": "Music-ASM\\Views\\AdminSongs\\Create.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-09T06:24:27.118Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 16,
               "Title": "Search.cshtml",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Search.cshtml",
               "RelativeDocumentMoniker": "Music-ASM\\Views\\Home\\Search.cshtml",
@@ -176,25 +346,11 @@
               "RelativeToolTip": "Music-ASM\\Views\\Home\\Search.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-09T06:20:02.887Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-09T06:20:02.887Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "Music-ASM\\Controllers\\HomeController.cs",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "Music-ASM\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAwGgAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T17:23:08.754Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 18,
               "Title": "Login.cshtml",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Account\\Login.cshtml",
               "RelativeDocumentMoniker": "Music-ASM\\Views\\Account\\Login.cshtml",
@@ -202,25 +358,11 @@
               "RelativeToolTip": "Music-ASM\\Views\\Account\\Login.cshtml",
               "ViewState": "AgIAADMAAAAAAAAAAAAAABcAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-26T16:38:17.613Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-26T16:38:17.613Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Music-ASM\\Views\\Home\\Index.cshtml",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Music-ASM\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAADAAAAAAAAAAAADwv2oAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-26T17:23:38.215Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 19,
               "Title": "AccountController.cs",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Music-ASM\\Controllers\\AccountController.cs",
@@ -228,12 +370,11 @@
               "RelativeToolTip": "Music-ASM\\Controllers\\AccountController.cs",
               "ViewState": "AgIAAEcAAAAAAAAAAAAzwH8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T16:25:29.507Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-26T16:25:29.507Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 21,
               "Title": "site.css",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "Music-ASM\\wwwroot\\css\\site.css",
@@ -245,7 +386,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 20,
               "Title": "PlaylistsController.cs",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\PlaylistsController.cs",
               "RelativeDocumentMoniker": "Music-ASM\\Controllers\\PlaylistsController.cs",
@@ -257,56 +398,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "AdminSongsController.cs",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\AdminSongsController.cs",
-              "RelativeDocumentMoniker": "Music-ASM\\Controllers\\AdminSongsController.cs",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Controllers\\AdminSongsController.cs",
-              "RelativeToolTip": "Music-ASM\\Controllers\\AdminSongsController.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAAAAwFoAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-09T06:23:49.842Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Playlists\\Details.cshtml",
-              "RelativeDocumentMoniker": "Music-ASM\\Views\\Playlists\\Details.cshtml",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Views\\Playlists\\Details.cshtml",
-              "RelativeToolTip": "Music-ASM\\Views\\Playlists\\Details.cshtml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAYwGQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-08T02:06:46.034Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "SongsController.cs",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Controllers\\SongsController.cs",
-              "RelativeDocumentMoniker": "Music-ASM\\Controllers\\SongsController.cs",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Controllers\\SongsController.cs",
-              "RelativeToolTip": "Music-ASM\\Controllers\\SongsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T01:01:33.012Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "MusicAsmDbContext.cs",
-              "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Models\\MusicAsmDbContext.cs",
-              "RelativeDocumentMoniker": "Music-ASM\\Models\\MusicAsmDbContext.cs",
-              "ToolTip": "D:\\Music-ASM\\Music-ASM\\Models\\MusicAsmDbContext.cs",
-              "RelativeToolTip": "Music-ASM\\Models\\MusicAsmDbContext.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwBIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T16:17:04.994Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 22,
               "Title": "Register.cshtml",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\Views\\Account\\Register.cshtml",
               "RelativeDocumentMoniker": "Music-ASM\\Views\\Account\\Register.cshtml",
@@ -318,7 +410,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 23,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Music-ASM\\Music-ASM\\appsettings.json",
               "RelativeDocumentMoniker": "Music-ASM\\appsettings.json",

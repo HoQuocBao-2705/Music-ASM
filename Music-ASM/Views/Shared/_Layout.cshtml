@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Music_ASM</title>
@@ -13,191 +12,197 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* ✅ FIX DUY NHẤT */
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        .sidebar {
-            width: 260px;
-            background-color: #000;
-            height: calc(100vh - 90px);
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 24px 12px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-item {
-            color: #b3b3b3;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 12px 16px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            transition: color 0.2s ease;
-        }
-
-            .nav-item:hover, .nav-item.active {
+            body {
+                background-color: #000;
                 color: #fff;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                /* ✅ FIX DUY NHẤT */
+                overflow-x: hidden;
+                overflow-y: auto;
             }
 
-            .nav-item i {
-                font-size: 1.2rem;
-                margin-right: 16px;
-                width: 24px;
+            .sidebar {
+                width: 260px;
+                background-color: #000;
+                height: calc(100vh - 90px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                padding: 24px 12px;
+                display: flex;
+                flex-direction: column;
             }
 
-        .divider {
-            height: 1px;
-            background-color: #282828;
-            margin: 16px 16px;
-        }
+            .nav-item {
+                color: #b3b3b3;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 12px 16px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                transition: color 0.2s ease;
+            }
 
-        .main-wrapper {
-            margin-left: 260px;
-            width: calc(100% - 260px);
-            /* ✅ FIX DUY NHẤT */
-            min-height: calc(100vh - 90px);
-            height: auto;
-            background: linear-gradient(180deg, #2a2a2a 0%, #121212 100%);
-            overflow-y: auto;
-            border-radius: 8px;
-            margin-top: 8px;
-        }
+                .nav-item:hover, .nav-item.active {
+                    color: #fff;
+                }
 
-        .topbar {
-            position: sticky;
-            top: 0;
-            background: rgba(18, 18, 18, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
+                .nav-item i {
+                    font-size: 1.2rem;
+                    margin-right: 16px;
+                    width: 24px;
+                }
 
-        .btn-upgrade {
-            background-color: #fff;
-            color: #000;
-            border-radius: 500px;
-            font-weight: bold;
-            padding: 8px 32px;
-            text-decoration: none;
-        }
+            .divider {
+                height: 1px;
+                background-color: #282828;
+                margin: 16px 16px;
+            }
 
-        .user-menu {
-            background-color: #000;
-            border-radius: 50px;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            border: 1px solid #282828;
-        }
+            .main-wrapper {
+                margin-left: 260px;
+                width: calc(100% - 260px);
+                /* ✅ FIX DUY NHẤT */
+                min-height: calc(100vh - 90px);
+                height: auto;
+                background: linear-gradient(180deg, #2a2a2a 0%, #121212 100%);
+                overflow-y: auto;
+                border-radius: 8px;
+                margin-top: 8px;
+            }
 
-            .user-menu img {
+            .topbar {
+                position: sticky;
+                top: 0;
+                background: rgba(18, 18, 18, 0.8);
+                backdrop-filter: blur(10px);
+                padding: 16px 32px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                z-index: 100;
+            }
+
+            .btn-upgrade {
+                background-color: #fff;
+                color: #000;
+                border-radius: 500px;
+                font-weight: bold;
+                padding: 8px 32px;
+                text-decoration: none;
+            }
+
+            .user-menu {
+                background-color: #000;
+                border-radius: 50px;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                border: 1px solid #282828;
+            }
+
+                .user-menu img {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+            .bottom-player {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 90px;
+                background-color: #181818;
+                border-top: 1px solid #282828;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 16px;
+                z-index: 1000;
+            }
+
+            .player-controls {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 40%;
+            }
+
+            .control-buttons {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+                color: #b3b3b3;
+                margin-bottom: 8px;
+            }
+
+            .btn-play-main {
+                background-color: #fff;
+                color: #000;
                 width: 32px;
                 height: 32px;
                 border-radius: 50%;
-                object-fit: cover;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
             }
 
-        .bottom-player {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 90px;
-            background-color: #181818;
-            border-top: 1px solid #282828;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 16px;
-            z-index: 1000;
-        }
-
-        .player-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 40%;
-        }
-
-        .control-buttons {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            color: #b3b3b3;
-            margin-bottom: 8px;
-        }
-
-        .btn-play-main {
-            background-color: #fff;
-            color: #000;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .progress-container {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            color: #b3b3b3;
-        }
-
-        .progress-bar-bg {
-            flex-grow: 1;
-            height: 4px;
-            background-color: #4d4d4d;
-            border-radius: 2px;
-        }
-
-        .progress-bar-fill {
-            width: 30%;
-            height: 100%;
-            background-color: #fff;
-            border-radius: 2px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background-color: #242424;
-            border-radius: 500px;
-            padding: 6px 15px;
-            width: 350px;
-        }
-
-            .search-box input {
-                background: transparent;
-                border: none;
-                outline: none;
-                color: #fff;
+            .progress-container {
                 width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 0.75rem;
+                color: #b3b3b3;
+            }
+
+            .progress-bar-bg {
+                flex-grow: 1;
+                height: 4px;
+                background-color: #4d4d4d;
+                border-radius: 2px;
+                cursor: pointer;
+            }
+
+            .progress-bar-fill {
+                width: 0%; /* Để mặc định là 0% */
+                height: 100%;
+                background-color: #fff;
+                border-radius: 2px;
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+                background-color: #242424;
+                border-radius: 500px;
+                padding: 6px 15px;
+                width: 350px;
+            }
+
+                .search-box input {
+                    background: transparent;
+                    border: none;
+                    outline: none;
+                    color: #fff;
+                    width: 100%;
+                }
+            
+            /* Thêm style nhỏ cho input type range (volume) */
+            input[type=range] {
+                cursor: pointer;
             }
     </style>
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
     <nav class="sidebar">
         <div class="mb-4 px-3">
             <h3 class="fw-bold" style="color: #fff;">
@@ -224,10 +229,8 @@
         </a>
     </nav>
 
-    <!-- MAIN -->
     <main class="main-wrapper">
 
-        <!-- TOPBAR -->
         <header class="topbar">
 
             <div class="d-flex align-items-center gap-3">
@@ -240,7 +243,6 @@
                 </form>
             </div>
 
-            <!-- LOGIN / USER -->
             <div class="d-flex align-items-center gap-3">
                 @if (!User.Identity.IsAuthenticated)
                 {
@@ -251,10 +253,16 @@
                 {
                     @if (User.IsInRole("Admin"))
                     {
+                        <a asp-controller="AdminSongs" asp-action="Artists" class="nav-item">
+                            🎤 Nghệ sĩ
+                        </a>
+
+                        <a asp-controller="AdminSongs" asp-action="Genres" class="nav-item">
+                            🎼 Thể loại
+                        </a>
                         <a href="/AdminSongs" class="nav-item">⚙️ Quản lý Songs</a>
                     }
 
-                    <!-- ✅ FIX DROPDOWN -->
                     <div class="dropdown">
                         <div class="user-menu" data-bs-toggle="dropdown">
                             <img src="@(User.FindFirst("Avatar")?.Value ?? "/images/default-avatar.png")">
@@ -277,22 +285,142 @@
 
         </header>
 
-        <!-- CONTENT -->
         <div class="p-4">
             @RenderBody()
         </div>
 
     </main>
 
-    <!-- PLAYER -->
     <footer class="bottom-player">
-        <div>Chưa phát bài nào</div>
-    </footer>
+        
+        <div class="d-flex align-items-center gap-3" style="width: 30%;">
+            <img id="player-cover" src="https://via.placeholder.com/56" alt="Cover" style="width: 56px; height: 56px; border-radius: 4px; object-fit: cover; display: none;">
+            <div>
+                <div id="player-title" class="fw-bold text-white">Chưa phát bài nào</div>
+                <div id="player-artist" style="font-size: 0.8rem; color: #b3b3b3;">---</div>
+            </div>
+        </div>
 
+        <div class="player-controls">
+            <div class="control-buttons">
+                <i class="fas fa-step-backward" style="cursor: pointer;"></i>
+                
+                <div class="btn-play-main" onclick="togglePlay()">
+                    <i id="play-icon" class="fas fa-play"></i>
+                </div>
+                
+                <i class="fas fa-step-forward" style="cursor: pointer;"></i>
+            </div>
+            
+            <div class="progress-container">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar-bg" onclick="seek(event)">
+                    <div id="progress-bar" class="progress-bar-fill"></div>
+                </div>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 justify-content-end" style="width: 30%;">
+            <i class="fas fa-volume-up text-secondary"></i>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="1" style="width: 100px;">
+        </div>
+
+    </footer>
+    
+    <audio id="audio-player"></audio>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @RenderSection("Scripts", required: false)
+    
+    <script>
+            let audio = document.getElementById("audio-player");
+
+            // 🎯 1. FIX: HIỂN THỊ THÔNG TIN BÀI HÁT
+            function playSong(id) {
+                fetch(`/Home/PlaySong?id=${id}`)
+                    .then(res => res.json())
+                    .then(data => {
+
+                        audio.src = data.filePath;
+                        audio.play();
+
+                        // UPDATE UI
+                        document.getElementById("player-title").innerText = data.title;
+                        document.getElementById("player-artist").innerText = data.artist;
+
+                        // nếu có ảnh
+                        let coverImg = document.getElementById("player-cover");
+                        if (data.cover) {
+                            coverImg.src = data.cover;
+                            coverImg.style.display = "block"; // Hiện ảnh khi có nhạc
+                        } else {
+                            coverImg.style.display = "none";
+                        }
+
+                        // đổi icon
+                        setPlayIcon(true);
+                    });
+            }
+
+            // 🎯 2. FIX: NÚT PLAY / PAUSE
+            function togglePlay() {
+                if (!audio.src) return;
+
+                if (audio.paused) {
+                    audio.play();
+                    setPlayIcon(true);
+                } else {
+                    audio.pause();
+                    setPlayIcon(false);
+                }
+            }
+
+            function setPlayIcon(playing) {
+                let icon = document.getElementById("play-icon");
+                icon.classList.remove("fa-play", "fa-pause");
+                icon.classList.add(playing ? "fa-pause" : "fa-play");
+            }
+
+            // 🎯 3. FIX: PROGRESS BAR (THANH CHẠY)
+            audio.addEventListener("timeupdate", () => {
+                if (!audio.duration) return;
+
+                let percent = (audio.currentTime / audio.duration) * 100;
+
+                document.getElementById("progress-bar").style.width = percent + "%";
+
+                document.getElementById("current-time").innerText = formatTime(audio.currentTime);
+                document.getElementById("duration").innerText = formatTime(audio.duration);
+            });
+
+            // FORMAT TIME
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return "0:00";
+                let m = Math.floor(seconds / 60);
+                let s = Math.floor(seconds % 60);
+                return m + ":" + (s < 10 ? "0" + s : s);
+            }
+
+            // CLICK ĐỂ TUA NHẠC
+            function seek(e) {
+                if (!audio.src) return;
+                let rect = e.currentTarget.getBoundingClientRect();
+                let percent = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = percent * audio.duration;
+            }
+
+            // 🎯 4. FIX: VOLUME BAR
+            document.getElementById("volume").addEventListener("input", function () {
+                audio.volume = this.value;
+            });
+
+            // 🎯 5. FIX: ICON KHÔNG ĐỔI
+            audio.addEventListener("play", () => setPlayIcon(true));
+            audio.addEventListener("pause", () => setPlayIcon(false));
+    </script>
 
 </body>
 </html>

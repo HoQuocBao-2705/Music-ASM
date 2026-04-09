@@ -1,5 +1,6 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\songs\artworks-zmL13yWyzgXiXSEf-GZMRqQ-t500x500.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -61,6 +62,10 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\music\6c1d2414-5fc5-4f0c-a192-acc7d7ed623d.mp3
+wwwroot\music\NNCS.mp3
+wwwroot\music\Ordinary.mp3
+wwwroot\music\Đừng Làm Trái Tim Anh Đau (Remix Instrumental).mp3
 D:\Music-ASM\Music-ASM\wwwroot\lib\jquery\LICENSE.txt
 D:\Music-ASM\Music-ASM\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\Music-ASM\Music-ASM\wwwroot\lib\jquery\dist\jquery.slim.min.js

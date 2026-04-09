@@ -1,21 +1,43 @@
 ﻿@model Music_ASM.Models.Song
 
-<h2>➕ Thêm bài hát</h2>
+<h2>✏️ Sửa bài hát</h2>
 
-<form asp-action="Create">
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+    <!-- ID -->
     <input type="hidden" asp-for="SongId" />
+
+    <!-- TITLE -->
     <input asp-for="Title" class="form-control mb-2" placeholder="Tên bài hát" />
+    <span asp-validation-for="Title" class="text-danger"></span>
 
-    <input asp-for="FilePath" class="form-control mb-2" placeholder="Link file mp3" />
+    <!-- FILE MP3 -->
+    <label>File nhạc (nếu muốn đổi)</label>
+    <input type="file" name="audioFile" class="form-control mb-2" />
 
-    <input asp-for="CoverImageUrl" class="form-control mb-2" placeholder="Ảnh bìa" />
+    <!-- GIỮ FILE CŨ -->
+    <input type="hidden" asp-for="FilePath" />
 
-    <input asp-for="Duration" class="form-control mb-2" placeholder="Thời lượng (giây)" />
+    <!-- ẢNH -->
+    <label>Ảnh bìa (nếu muốn đổi)</label>
+    <input type="file" name="imageFile" class="form-control mb-2" />
 
+    <!-- GIỮ ẢNH CŨ -->
+    <input type="hidden" asp-for="CoverImageUrl" />
+
+    <!-- DURATION -->
+    <input asp-for="Duration" type="number" class="form-control mb-2" />
+    <span asp-validation-for="Duration" class="text-danger"></span>
+
+    <!-- ARTIST -->
     <select asp-for="ArtistId" asp-items="ViewBag.Artists" class="form-control mb-2"></select>
+    <span asp-validation-for="ArtistId" class="text-danger"></span>
 
+    <!-- GENRE -->
     <select asp-for="GenreId" asp-items="ViewBag.Genres" class="form-control mb-2"></select>
+    <span asp-validation-for="GenreId" class="text-danger"></span>
 
-    <button type="submit" class="btn btn-success">Lưu</button>
-
+    <button type="submit" class="btn btn-warning">Cập nhật</button>
 </form>

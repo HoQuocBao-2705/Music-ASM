@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace Music_ASM.Models;
 
 public partial class Song
@@ -11,7 +11,7 @@ public partial class Song
 
     public int Duration { get; set; }
 
-    public string FilePath { get; set; } = null!;
+    public string? FilePath { get; set; }
 
     public string? CoverImageUrl { get; set; }
 
@@ -27,9 +27,11 @@ public partial class Song
 
     public virtual Album? Album { get; set; }
 
-    public virtual Artist Artist { get; set; } = null!;
+    [ValidateNever]
+    public virtual Artist Artist { get; set; }
 
-    public virtual Genre Genre { get; set; } = null!;
+    [ValidateNever]
+    public virtual Genre Genre { get; set; }
 
     public virtual ICollection<PlaylistSong> PlaylistSongs { get; set; } = new List<PlaylistSong>();
 }

@@ -1,0 +1,20 @@
+﻿@model List<Music_ASM.Models.Genre>
+
+<h2>Danh sách Thể loại</h2>
+
+<a asp-action="CreateGenre" class="btn btn-primary mb-3">+ Thêm</a>
+
+<table class="table table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+    </tr>
+
+    @foreach (var g in Model)
+    {
+        <tr>
+            <td>@g.GenreId</td>
+            <td>@g.Name</td>
+        </tr>
+    }
+</table>
