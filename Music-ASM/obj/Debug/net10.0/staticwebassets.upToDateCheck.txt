@@ -1,5 +1,7 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\avatars\avatar_7_639114050122571009.png
+wwwroot\images\avatars\avatar_7_639114063244543694.jpg
 wwwroot\images\songs\1697707543908_300.jpg
 wwwroot\images\songs\2ced2efd-9a2b-42f7-a08c-a514f73d62cf.jpg
 wwwroot\images\songs\896129ce-26f6-4cea-b4ba-b0b0d9169f70.webp

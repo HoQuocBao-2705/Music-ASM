@@ -214,7 +214,7 @@
                 border-radius: 8px;
             }
 
-                .dropdown-menu-dark .dropdown-item {
+            .dropdown-menu-dark .dropdown-item {
                     color: #b3b3b3;
                     transition: all 0.2s;
                 }
@@ -223,6 +223,25 @@
                         background-color: #3e3e3e;
                         color: #fff;
                     }
+            .btn-dark.rounded-circle {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: all 0.2s;
+}
+
+.btn-dark.rounded-circle:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.05);
+}
+
+.btn-dark.rounded-circle:active {
+    transform: scale(0.95);
+}
+
     </style>
 </head>
 
@@ -259,12 +278,16 @@
         <header class="topbar">
 
             <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-dark rounded-circle">
+                <button id="btnBack" class="btn btn-dark rounded-circle" onclick="goBack()" title="Quay lại (Alt + ←)">
                     <i class="fas fa-chevron-left"></i>
+                </button>
+    
+                <button id="btnForward" class="btn btn-dark rounded-circle" onclick="goForward()" title="Tiến tới (Alt + →)">
+                    <i class="fas fa-chevron-right"></i>
                 </button>
 
                 <form asp-controller="Home" asp-action="Search" method="get" class="search-box">
-                    <input type="text" name="keyword" placeholder="Bạn muốn nghe gì?" />
+                    <input type="text" name="keyword" placeholder="Bạn muốn nghe gì?" value="@ViewBag.Keyword" />
                 </form>
             </div>
 
@@ -314,7 +337,7 @@
                         </div>
 
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2" style="background-color: #282828; border: 1px solid #3e3e3e; border-radius: 8px;">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Hồ sơ</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fas fa-user me-2"></i>Hồ sơ</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-crown me-2"></i>Nâng cấp Premium</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -464,6 +487,55 @@
             // 🎯 5. FIX: ICON KHÔNG ĐỔI
             audio.addEventListener("play", () => setPlayIcon(true));
             audio.addEventListener("pause", () => setPlayIcon(false));
+// Chức năng nút Back và Forward
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        // Nếu không có lịch sử, quay về trang chủ
+        window.location.href = '/';
+    }
+}
+
+function goForward() {
+    window.history.forward();
+}
+
+// Cập nhật trạng thái nút (có thể bật/tắt)
+function updateNavButtons() {
+    const btnBack = document.getElementById('btnBack');
+    const btnForward = document.getElementById('btnForward');
+    
+    // Kiểm tra xem có thể back/forward không (hơi phức tạp)
+    // Đơn giản là luôn bật, browser sẽ tự xử lý
+    if (btnBack) {
+        btnBack.style.opacity = window.history.length > 1 ? '1' : '0.5';
+    }
+}
+
+// Gọi khi trang load
+document.addEventListener('DOMContentLoaded', function() {
+    updateNavButtons();
+    
+    // Lắng nghe sự kiện popstate để cập nhật nút
+    window.addEventListener('popstate', function() {
+        updateNavButtons();
+    });
+});
+
+// Phím tắt
+document.addEventListener('keydown', function(event) {
+    // Alt + Left Arrow: Quay lại
+    if (event.altKey && event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goBack();
+    }
+    // Alt + Right Arrow: Tiến tới
+    if (event.altKey && event.key === 'ArrowRight') {
+        event.preventDefault();
+        goForward();
+    }
+});            
     </script>
 
 </body>

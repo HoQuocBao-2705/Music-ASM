@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Music_ASM.Models;
@@ -130,6 +131,103 @@ namespace Music_ASM.Controllers
             // Dùng TempData để truyền thông báo thành công sang trang Login
             TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập để nghe nhạc.";
             return RedirectToAction("Login");
+        }
+        // GET: Hiển thị trang hồ sơ người dùng
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            // Lấy UserId từ claims
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            // Lấy thông tin user từ database
+            var user = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View(user);
+        }
+
+        // POST: Cập nhật thông tin hồ sơ
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfile(string fullName, string email, IFormFile avatar)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Cập nhật thông tin
+            if (!string.IsNullOrEmpty(fullName))
+            {
+                user.FullName = fullName;
+            }
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                user.Email = email;
+            }
+
+            // Xử lý upload avatar
+            if (avatar != null && avatar.Length > 0)
+            {
+                // Tạo tên file duy nhất
+                var fileName = $"avatar_{userId}_{DateTime.Now.Ticks}{Path.GetExtension(avatar.FileName)}";
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "avatars");
+                var filePath = Path.Combine(folderPath, fileName);
+
+                // Tạo thư mục nếu chưa tồn tại
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Lưu file
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await avatar.CopyToAsync(stream);
+                }
+
+                // Cập nhật AvatarUrl
+                user.AvatarUrl = $"/images/avatars/{fileName}";
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Cập nhật lại claim FullName và Avatar
+            await UpdateClaim("FullName", user.FullName);
+            await UpdateClaim("Avatar", user.AvatarUrl ?? "");
+
+            TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+            return RedirectToAction("Profile");
+        }
+
+        // Helper: Cập nhật claim
+        private async Task UpdateClaim(string claimType, string newValue)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            var oldClaim = identity.FindFirst(claimType);
+
+            if (oldClaim != null)
+            {
+                identity.RemoveClaim(oldClaim);
+            }
+
+            identity.AddClaim(new Claim(claimType, newValue));
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity)
+            );
         }
     }
 }

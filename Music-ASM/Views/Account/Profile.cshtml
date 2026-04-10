@@ -1,0 +1,181 @@
+﻿@using Music_ASM.Models
+@using Music_ASM.Helpers
+@model User
+
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    // Lấy avatar chữ cái đầu nếu không có avatar
+    var initials = UserHelper.GetInitials(Model?.FullName ?? Model?.Username ?? "User");
+    var avatarColor = UserHelper.GetAvatarColor(Model?.FullName ?? Model?.Username ?? "User");
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <!-- Card thông tin avatar -->
+            <div class="card" style="background-color: #181818; border: none; border-radius: 12px;">
+                <div class="card-body text-center">
+                    <!-- Avatar -->
+                    <div class="mb-3">
+                        @if (!string.IsNullOrEmpty(Model?.AvatarUrl) && Model.AvatarUrl != "/images/default-avatar.png")
+                        {
+                            <img src="@Model.AvatarUrl"
+                                 alt="Avatar"
+                                 style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #1db954;">
+                        }
+                        else
+                        {
+                            <div style="width: 150px; height: 150px; border-radius: 50%; background-color: @avatarColor; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 3px solid #1db954;">
+                                <span style="font-size: 48px; font-weight: bold; color: white;">@initials</span>
+                            </div>
+                        }
+                    </div>
+                    
+                    <h4 class="text-white mb-1">@Model?.FullName</h4>
+                    <p class="text-muted">@@@Model?.Username</p>
+                    
+                    @if (Model != null && Model.IsPremium == true)
+                    {
+                        <span class="badge" style="background-color: #1db954; padding: 5px 12px;">
+                            <i class="fas fa-crown"></i> Premium
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge" style="background-color: #3e3e3e; padding: 5px 12px;">
+                            <i class="fas fa-user"></i> Free
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <!-- Card thông tin chi tiết -->
+            <div class="card" style="background-color: #181818; border: none; border-radius: 12px;">
+                <div class="card-body">
+                    <h4 class="text-white mb-4">
+                        <i class="fas fa-info-circle me-2"></i>Thông tin cá nhân
+                    </h4>
+                    
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    
+                    <form asp-controller="Account" asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label text-white">Họ và tên</label>
+                            <input type="text" name="fullName" value="@Model?.FullName"
+                                   class="form-control" style="background-color: #282828; border: none; color: white;">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-white">Tên đăng nhập</label>
+                            <input type="text" value="@Model?.Username"
+                                   class="form-control" style="background-color: #282828; border: none; color: #b3b3b3;" readonly disabled>
+                            <small class="text-muted">Không thể thay đổi tên đăng nhập</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-white">Email</label>
+                            <input type="email" name="email" value="@Model?.Email"
+                                   class="form-control" style="background-color: #282828; border: none; color: white;">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-white">Ngày tham gia</label>
+                            @if (Model?.CreatedAt != null)
+                                {
+                                <input type="text" value="@(Model.CreatedAt.HasValue? Model.CreatedAt.Value.ToString("dd/MM/yyyy HH:mm") : "Chưa có dữ liệu")"
+                                       class="form-control" style="background-color: #282828; border: none; color: #b3b3b3;" readonly disabled>
+                                }
+                                else
+                            {
+                                <input type="text" value="Chưa có dữ liệu"
+                                       class="form-control" style="background-color: #282828; border: none; color: #b3b3b3;" readonly disabled>
+                            }
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-white">Vai trò</label>
+                            <input type="text" value="@(Model?.Role?.RoleName ?? "User")"
+                                   class="form-control" style="background-color: #282828; border: none; color: #b3b3b3;" readonly disabled>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-white">Ảnh đại diện</label>
+                            <input type="file" name="avatar" class="form-control" style="background-color: #282828; border: none; color: white;" accept="image/*">
+                            <small class="text-muted">Chọn ảnh mới để thay đổi avatar (jpg, png, gif)</small>
+                        </div>
+                        
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn btn-success rounded-pill px-4">
+                                <i class="fas fa-save me-2"></i>Lưu thay đổi
+                            </button>
+                            
+                            @if (Model != null && Model.IsPremium != true)
+                            {
+                                <a href="#" class="btn btn-outline-warning rounded-pill px-4">
+                                    <i class="fas fa-crown me-2"></i>Nâng cấp Premium
+                                </a>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Card thống kê -->
+            <div class="card mt-4" style="background-color: #181818; border: none; border-radius: 12px;">
+                <div class="card-body">
+                    <h5 class="text-white mb-3">
+                        <i class="fas fa-chart-line me-2"></i>Thống kê hoạt động
+                    </h5>
+                    
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="p-3" style="background-color: #282828; border-radius: 8px;">
+                                <h3 class="text-success mb-0">@(Model?.Playlists?.Count ?? 0)</h3>
+                                <small class="text-muted">Playlist đã tạo</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-3" style="background-color: #282828; border-radius: 8px;">
+                                <h3 class="text-success mb-0">0</h3>
+                                <small class="text-muted">Bài hát yêu thích</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-3" style="background-color: #282828; border-radius: 8px;">
+                                <h3 class="text-success mb-0">0</h3>
+                                <small class="text-muted">Lượt nghe</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        background-color: #333 !important;
+        border-color: #1db954 !important;
+        box-shadow: none !important;
+        color: white !important;
+    }
+    
+    .form-control {
+        transition: all 0.2s;
+    }
+    
+    input:disabled, input[readonly] {
+        cursor: not-allowed;
+    }
+</style>
