@@ -70,6 +70,9 @@
                 overflow-y: auto;
                 border-radius: 8px;
                 margin-top: 8px;
+                
+                /* Thêm dòng này để fix lỗi khuất nội dung */
+                padding-bottom: 110px; 
             }
 
             .topbar {
@@ -224,23 +227,28 @@
                         color: #fff;
                     }
             .btn-dark.rounded-circle {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    transition: all 0.2s;
-}
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.7);
+                transition: all 0.2s;
+            }
 
-.btn-dark.rounded-circle:hover {
-    background-color: rgba(0, 0, 0, 0.9);
-    transform: scale(1.05);
-}
+            .btn-dark.rounded-circle:hover {
+                background-color: rgba(0, 0, 0, 0.9);
+                transform: scale(1.05);
+            }
 
-.btn-dark.rounded-circle:active {
-    transform: scale(0.95);
-}
+            .btn-dark.rounded-circle:active {
+                transform: scale(0.95);
+            }
+            /* Thêm vào style */
+            .row.text-center .col-4 > div:hover {
+                transform: translateY(-3px);
+                background-color: #333 !important;
+            }
 
     </style>
 </head>
@@ -338,7 +346,9 @@
 
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2" style="background-color: #282828; border: 1px solid #3e3e3e; border-radius: 8px;">
                             <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fas fa-user me-2"></i>Hồ sơ</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-crown me-2"></i>Nâng cấp Premium</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="UpgradePremium">
+                                <i class="fas fa-crown me-2"></i>Nâng cấp Premium
+                            </a></li>                           
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
@@ -352,7 +362,7 @@
 
         </header>
 
-        <div class="p-4">
+        <div class="p-4" style="padding-bottom: 80px;">
             @RenderBody()
         </div>
 
@@ -370,13 +380,13 @@
 
         <div class="player-controls">
             <div class="control-buttons">
-                <i class="fas fa-step-backward" style="cursor: pointer;"></i>
+                <i class="fas fa-step-backward" style="cursor: pointer;" onclick="prevSong()"></i>
                 
                 <div class="btn-play-main" onclick="togglePlay()">
                     <i id="play-icon" class="fas fa-play"></i>
                 </div>
                 
-                <i class="fas fa-step-forward" style="cursor: pointer;"></i>
+                <i class="fas fa-step-forward" style="cursor: pointer;" onclick="nextSong()"></i>
             </div>
             
             <div class="progress-container">
@@ -403,139 +413,325 @@
     @RenderSection("Scripts", required: false)
     
     <script>
-            let audio = document.getElementById("audio-player");
+        // ========== PLAYER TOÀN CỤC VỚI LOCALSTORAGE ==========
+        let audio = document.getElementById("audio-player");
+        let isInitialized = false;
+        
+        // 🎯 BIẾN THEO DÕI THỜI GIAN NGHE
+        let listenStartTime = null;
+        let currentSongId = null;
 
-            // 🎯 1. FIX: HIỂN THỊ THÔNG TIN BÀI HÁT
-            function playSong(id) {
-                fetch(`/Home/PlaySong?id=${id}`)
-                    .then(res => res.json())
-                    .then(data => {
-
-                        audio.src = data.filePath;
-                        audio.play();
-
-                        // UPDATE UI
-                        document.getElementById("player-title").innerText = data.title;
-                        document.getElementById("player-artist").innerText = data.artist;
-
-                        // nếu có ảnh
-                        let coverImg = document.getElementById("player-cover");
-                        if (data.cover) {
-                            coverImg.src = data.cover;
-                            coverImg.style.display = "block"; // Hiện ảnh khi có nhạc
-                        } else {
-                            coverImg.style.display = "none";
-                        }
-
-                        // đổi icon
+        // Khôi phục trạng thái từ localStorage khi tải trang
+        function restorePlayerState() {
+            const savedSong = localStorage.getItem('currentSong');
+            const savedTime = localStorage.getItem('currentTime');
+            const savedPlaying = localStorage.getItem('isPlaying') === 'true';
+            
+            if (savedSong) {
+                try {
+                    const songData = JSON.parse(savedSong);
+                    document.getElementById("player-title").innerText = songData.title;
+                    document.getElementById("player-artist").innerText = songData.artist;
+                    
+                    let coverImg = document.getElementById("player-cover");
+                    if (songData.cover) {
+                        coverImg.src = songData.cover;
+                        coverImg.style.display = "block";
+                    } else {
+                        coverImg.style.display = "none";
+                    }
+                    
+                    audio.src = songData.filePath;
+                    // Phục hồi ID bài hát để tính giờ
+                    currentSongId = localStorage.getItem('currentSongId');
+                    
+                    if (savedTime && !isNaN(parseFloat(savedTime))) {
+                        audio.currentTime = parseFloat(savedTime);
+                    }
+                    
+                    if (savedPlaying) {
+                        listenStartTime = Date.now(); // Bắt đầu tính giờ lại nếu đang phát
+                        audio.play().catch(e => console.log("Auto-play bị chặn:", e));
                         setPlayIcon(true);
-                    });
-            }
-
-            // 🎯 2. FIX: NÚT PLAY / PAUSE
-            function togglePlay() {
-                if (!audio.src) return;
-
-                if (audio.paused) {
-                    audio.play();
-                    setPlayIcon(true);
-                } else {
-                    audio.pause();
-                    setPlayIcon(false);
+                    } else {
+                        setPlayIcon(false);
+                    }
+                } catch(e) {
+                    console.log("Khôi phục thất bại:", e);
                 }
             }
-
-            function setPlayIcon(playing) {
-                let icon = document.getElementById("play-icon");
-                icon.classList.remove("fa-play", "fa-pause");
-                icon.classList.add(playing ? "fa-pause" : "fa-play");
+            isInitialized = true;
+        }
+        
+        // Lưu trạng thái hiện tại
+        function savePlayerState() {
+            if (!isInitialized) return;
+            
+            const currentSong = {
+                filePath: audio.src,
+                title: document.getElementById("player-title").innerText,
+                artist: document.getElementById("player-artist").innerText,
+                cover: document.getElementById("player-cover").src
+            };
+            
+            if (audio.src && audio.src !== window.location.href) {
+                localStorage.setItem('currentSong', JSON.stringify(currentSong));
+                localStorage.setItem('currentTime', audio.currentTime);
+                localStorage.setItem('isPlaying', !audio.paused);
+                if (currentSongId) {
+                    localStorage.setItem('currentSongId', currentSongId);
+                }
             }
+        }
+        
+        // Lưu trạng thái trước khi rời trang
+        window.addEventListener('beforeunload', function() {
+            savePlayerState();
+            trackListeningTime(); // Ghi nhận thời gian nghe trước khi thoát
+        });
+        
+        // Lưu định kỳ mỗi 5 giây
+        setInterval(function() {
+            if (audio.src && !audio.paused) {
+                savePlayerState();
+            }
+        }, 5000);
+        
+        // Lưu khi timeupdate
+        audio.addEventListener('timeupdate', function() {
+            if (audio.src && !audio.paused && isInitialized) {
+                localStorage.setItem('currentTime', audio.currentTime);
+            }
+        });
+        
+        // ========== DANH SÁCH PHÁT TOÀN CỤC ==========
+        let currentPlaylist = [];
+        let currentIndex = -1;
+        
+        function setPlaylist(songIds, newSongId) {
+            currentPlaylist = songIds;
+            currentIndex = currentPlaylist.indexOf(newSongId);
+            localStorage.setItem('currentPlaylist', JSON.stringify(currentPlaylist));
+            localStorage.setItem('currentIndex', currentIndex);
+            console.log("Playlist updated:", currentPlaylist, "Current index:", currentIndex);
+        }
+        
+        function restorePlaylist() {
+            const savedPlaylist = localStorage.getItem('currentPlaylist');
+            const savedIndex = localStorage.getItem('currentIndex');
+            if (savedPlaylist) {
+                currentPlaylist = JSON.parse(savedPlaylist);
+                currentIndex = parseInt(savedIndex);
+            }
+        }
+        
+        function nextSong() {
+            if (currentPlaylist.length === 0) return;
+            if (currentIndex < currentPlaylist.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            playSongById(currentPlaylist[currentIndex]);
+        }
+        
+        function prevSong() {
+            if (currentPlaylist.length === 0) return;
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = currentPlaylist.length - 1;
+            }
+            playSongById(currentPlaylist[currentIndex]);
+        }
+        
+        // Hàm phát bài theo ID
+        function playSongById(songId) {
+            // Ghi nhận thời gian bài trước đó (nếu có)
+            trackListeningTime();
+            
+            // Ghi nhận bài hát mới và thời gian bắt đầu
+            currentSongId = songId;
+            listenStartTime = Date.now();
 
-            // 🎯 3. FIX: PROGRESS BAR (THANH CHẠY)
-            audio.addEventListener("timeupdate", () => {
-                if (!audio.duration) return;
-
-                let percent = (audio.currentTime / audio.duration) * 100;
-
-                document.getElementById("progress-bar").style.width = percent + "%";
-
-                document.getElementById("current-time").innerText = formatTime(audio.currentTime);
-                document.getElementById("duration").innerText = formatTime(audio.duration);
+            fetch(`/Home/PlaySong?id=${songId}`)
+                .then(res => res.json())
+                .then(data => {
+                    audio.src = data.filePath;
+                    audio.play();
+                    
+                    document.getElementById("player-title").innerText = data.title;
+                    document.getElementById("player-artist").innerText = data.artist;
+                    
+                    let coverImg = document.getElementById("player-cover");
+                    if (data.cover) {
+                        coverImg.src = data.cover;
+                        coverImg.style.display = "block";
+                    } else {
+                        coverImg.style.display = "none";
+                    }
+                    
+                    setPlayIcon(true);
+                    savePlayerState();
+                })
+                .catch(error => {
+                    console.error("Error playing song:", error);
+                });
+        }
+        
+        function playSong(id) {
+            let songIds = [];
+            document.querySelectorAll('[onclick^="playSong"]').forEach(btn => {
+                let match = btn.getAttribute('onclick').match(/playSong\((\d+)\)/);
+                if (match) songIds.push(parseInt(match[1]));
             });
-
-            // FORMAT TIME
-            function formatTime(seconds) {
-                if (isNaN(seconds)) return "0:00";
-                let m = Math.floor(seconds / 60);
-                let s = Math.floor(seconds % 60);
-                return m + ":" + (s < 10 ? "0" + s : s);
+            
+            if (songIds.length === 0) songIds = [id];
+            
+            setPlaylist(songIds, id);
+            playSongById(id);
+        }
+        
+        // 🎯 HÀM GHI NHẬN THỜI GIAN NGHE
+        function trackListeningTime() {
+            if (currentSongId && listenStartTime) {
+                const duration = Math.floor((Date.now() - listenStartTime) / 1000);
+                if (duration >= 5) { // Chỉ ghi nhận nếu nghe >= 5 giây
+                    fetch('/Home/TrackListening', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            songId: currentSongId,
+                            duration: duration
+                        })
+                    }).catch(err => console.log("Lỗi ghi nhận thời gian:", err));
+                }
+                listenStartTime = null;
+                // Giữ lại currentSongId vì localStorage có thể cần dùng
             }
+        }
 
-            // CLICK ĐỂ TUA NHẠC
-            function seek(e) {
-                if (!audio.src) return;
-                let rect = e.currentTarget.getBoundingClientRect();
-                let percent = (e.clientX - rect.left) / rect.width;
-                audio.currentTime = percent * audio.duration;
+        // Tự động chuyển bài và ghi nhận
+        audio.addEventListener("ended", () => {
+            trackListeningTime();
+            nextSong();
+            savePlayerState();
+        });
+
+        function togglePlay() {
+            if (!audio.src) return;
+            if (audio.paused) {
+                audio.play();
+                setPlayIcon(true);
+                listenStartTime = Date.now(); // Tiếp tục tính giờ
+            } else {
+                audio.pause();
+                setPlayIcon(false);
+                trackListeningTime(); // Dừng tính giờ và gửi lên server
             }
-
-            // 🎯 4. FIX: VOLUME BAR
-            document.getElementById("volume").addEventListener("input", function () {
+            savePlayerState();
+        }
+        
+        function setPlayIcon(playing) {
+            let icon = document.getElementById("play-icon");
+            icon.classList.remove("fa-play", "fa-pause");
+            icon.classList.add(playing ? "fa-pause" : "fa-play");
+        }
+        
+        // Thanh tiến trình
+        audio.addEventListener("timeupdate", () => {
+            if (!audio.duration) return;
+            let percent = (audio.currentTime / audio.duration) * 100;
+            document.getElementById("progress-bar").style.width = percent + "%";
+            document.getElementById("current-time").innerText = formatTime(audio.currentTime);
+            document.getElementById("duration").innerText = formatTime(audio.duration);
+        });
+        
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            let m = Math.floor(seconds / 60);
+            let s = Math.floor(seconds % 60);
+            return m + ":" + (s < 10 ? "0" + s : s);
+        }
+        
+        function seek(e) {
+            if (!audio.src) return;
+            let rect = e.currentTarget.getBoundingClientRect();
+            let percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+            savePlayerState();
+        }
+        
+        // Volume
+        const volumeSlider = document.getElementById("volume");
+        if (volumeSlider) {
+            const savedVolume = localStorage.getItem('volume');
+            if (savedVolume) {
+                audio.volume = parseFloat(savedVolume);
+                volumeSlider.value = savedVolume;
+            }
+            
+            volumeSlider.addEventListener("input", function() {
                 audio.volume = this.value;
+                localStorage.setItem('volume', this.value);
             });
+        }
+        
+        audio.addEventListener("play", () => {
+            setPlayIcon(true);
+            savePlayerState();
+        });
+        
+        audio.addEventListener("pause", () => {
+            setPlayIcon(false);
+            savePlayerState();
+        });
+        
+        // Khởi tạo khi trang load
+        document.addEventListener('DOMContentLoaded', function() {
+            restorePlaylist();
+            restorePlayerState();
+        });
 
-            // 🎯 5. FIX: ICON KHÔNG ĐỔI
-            audio.addEventListener("play", () => setPlayIcon(true));
-            audio.addEventListener("pause", () => setPlayIcon(false));
-// Chức năng nút Back và Forward
-function goBack() {
-    if (window.history.length > 1) {
-        window.history.back();
-    } else {
-        // Nếu không có lịch sử, quay về trang chủ
-        window.location.href = '/';
-    }
-}
+        // Chức năng nút Back và Forward
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
 
-function goForward() {
-    window.history.forward();
-}
+        function goForward() {
+            window.history.forward();
+        }
 
-// Cập nhật trạng thái nút (có thể bật/tắt)
-function updateNavButtons() {
-    const btnBack = document.getElementById('btnBack');
-    const btnForward = document.getElementById('btnForward');
-    
-    // Kiểm tra xem có thể back/forward không (hơi phức tạp)
-    // Đơn giản là luôn bật, browser sẽ tự xử lý
-    if (btnBack) {
-        btnBack.style.opacity = window.history.length > 1 ? '1' : '0.5';
-    }
-}
+        function updateNavButtons() {
+            const btnBack = document.getElementById('btnBack');
+            if (btnBack) {
+                btnBack.style.opacity = window.history.length > 1 ? '1' : '0.5';
+            }
+        }
 
-// Gọi khi trang load
-document.addEventListener('DOMContentLoaded', function() {
-    updateNavButtons();
-    
-    // Lắng nghe sự kiện popstate để cập nhật nút
-    window.addEventListener('popstate', function() {
-        updateNavButtons();
-    });
-});
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavButtons();
+            window.addEventListener('popstate', function() {
+                updateNavButtons();
+            });
+        });
 
-// Phím tắt
-document.addEventListener('keydown', function(event) {
-    // Alt + Left Arrow: Quay lại
-    if (event.altKey && event.key === 'ArrowLeft') {
-        event.preventDefault();
-        goBack();
-    }
-    // Alt + Right Arrow: Tiến tới
-    if (event.altKey && event.key === 'ArrowRight') {
-        event.preventDefault();
-        goForward();
-    }
-});            
+        document.addEventListener('keydown', function(event) {
+            if (event.altKey && event.key === 'ArrowLeft') {
+                event.preventDefault();
+                goBack();
+            }
+            if (event.altKey && event.key === 'ArrowRight') {
+                event.preventDefault();
+                goForward();
+            }
+        });            
     </script>
 
 </body>

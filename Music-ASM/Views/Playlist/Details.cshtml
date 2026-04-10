@@ -1,23 +1,193 @@
-﻿@model Music_ASM.Models.Playlist
+﻿@using Music_ASM.Models
+@model Playlist
 
-<h2>@Model.Title</h2>
+@{
+    ViewData["Title"] = Model?.Title ?? "Chi tiết playlist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<div class="row">
-    @foreach (var item in Model.PlaylistSongs)
+<div class="container py-4">
+    @if (TempData["SuccessMessage"] != null)
     {
-        <div class="col-md-3">
-            <div class="song-card">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
-                <img src="@item.Song.CoverImageUrl" style="width:100%" />
-
-                <div class="song-title">@item.Song.Title</div>
-                <div class="song-artist">@item.Song.Artist.Name</div>
-
-                <button onclick="playSong(@item.Song.SongId)" class="btn btn-success mt-2">
-                    ▶ Play
-                </button>
-
+    @if (Model != null)
+    {
+        <!-- Header Playlist -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                @{
+                    var firstSong = Model.PlaylistSongs?.FirstOrDefault()?.Song;
+                }
+                <img src="@(firstSong?.CoverImageUrl ?? Model.CoverImageUrl ?? "/images/default-playlist.jpg")"
+                     alt="@Model.Title"
+                     style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             </div>
+            <div class="col-md-9 d-flex flex-column justify-content-end">
+                <p class="text-muted mb-1">PLAYLIST</p>
+                <h1 class="display-4 fw-bold text-white mb-2">@Model.Title</h1>
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <p class="text-white-50">@Model.Description</p>
+                }
+                <div class="d-flex align-items-center gap-3 mt-2">
+                    <p class="text-muted mb-0">
+                        <i class="fas fa-user me-1"></i> @Model.User?.Username
+                        <i class="fas fa-music ms-3 me-1"></i> @(Model.PlaylistSongs?.Count ?? 0) bài hát
+                    </p>
+                    <button onclick="confirmDeletePlaylist(@Model.PlaylistId)" class="btn btn-danger btn-sm rounded-pill px-3">
+                        <i class="fas fa-trash-alt me-1"></i> Xóa Playlist
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danh sách bài hát -->
+        <div class="mt-4">
+            <h4 class="text-white mb-3">Danh sách bài hát</h4>
+            
+            @if (Model.PlaylistSongs != null && Model.PlaylistSongs.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>BÀI HÁT</th>
+                                <th>NGHỆ SĨ</th>
+                                <th>THỜI LƯỢNG</th>
+                                <th style="width: 100px;">THAO TÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int index = 1;
+                                foreach (var ps in Model.PlaylistSongs)
+                                {
+                                    var song = ps.Song;
+                                    if (song != null)
+                                    {
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img src="@(song.CoverImageUrl ?? "/images/default-song.jpg")"
+                                                         style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                                    <div>
+                                                        <div class="fw-bold">@song.Title</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@song.Artist?.Name</td>
+                                            <td>@FormatDuration(song.Duration)</td>
+                                            <td>
+                                                <button onclick="removeSong(@Model.PlaylistId, @song.SongId)"
+                                                        class="btn btn-outline-danger btn-sm rounded-circle"
+                                                        title="Xóa khỏi playlist">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                                <button onclick="playSong(@song.SongId)"
+                                                        class="btn btn-outline-success btn-sm rounded-circle ms-1"
+                                                        title="Phát nhạc">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        index++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5" style="background-color: #181818; border-radius: 12px;">
+                    <i class="fas fa-music" style="font-size: 48px; color: #b3b3b3;"></i>
+                    <h5 class="mt-3 text-white-50">Playlist chưa có bài hát nào</h5>
+                    <p class="text-muted">Hãy thêm bài hát từ trang chủ nhé!</p>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-success rounded-pill px-4 mt-2">
+                        <i class="fas fa-plus me-1"></i> Thêm bài hát
+                    </a>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <h3 class="text-white">Không tìm thấy playlist</h3>
+            <a asp-controller="Playlist" asp-action="Index" class="btn btn-primary mt-3">Quay lại</a>
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        // Xóa bài hát khỏi playlist
+        function removeSong(playlistId, songId) {
+            if (confirm('Bạn có chắc muốn xóa bài hát này khỏi playlist?')) {
+                // Tạo form submit POST
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/Playlist/RemoveSong?playlistId=${playlistId}&songId=${songId}`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        // Xóa toàn bộ playlist
+        function confirmDeletePlaylist(playlistId) {
+            if (confirm('Bạn có chắc muốn xóa toàn bộ playlist này?\nHành động này không thể hoàn tác!')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/Playlist/DeletePlaylist?id=${playlistId}`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        // Hàm playSong (nếu chưa có)
+        function playSong(songId) {
+            fetch(`/Home/PlaySong?id=${songId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const audio = document.getElementById('audio-player');
+                    audio.src = data.filePath;
+                    audio.play();
+                    document.getElementById('player-title').innerText = data.title;
+                    document.getElementById('player-artist').innerText = data.artist;
+                    const coverImg = document.getElementById('player-cover');
+                    if (data.cover) {
+                        coverImg.src = data.cover;
+                        coverImg.style.display = 'block';
+                    }
+                    // Cập nhật icon play/pause
+                    const playIcon = document.getElementById('play-icon');
+                    playIcon.classList.remove('fa-play');
+                    playIcon.classList.add('fa-pause');
+                });
+        }
+    </script>
+}
+
+@functions {
+    string FormatDuration(int seconds)
+    {
+        var time = TimeSpan.FromSeconds(seconds);
+        return $"{time.Minutes:D2}:{time.Seconds:D2}";
+    }
+}

@@ -1,35 +1,102 @@
 ﻿@model IEnumerable<Music_ASM.Models.Song>
 
-<h2>🎵 Quản lý bài hát</h2>
+@{
+    ViewData["Title"] = "Quản lý bài hát";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<a asp-action="Create" class="btn btn-success mb-3">+ Thêm bài hát</a>
+<div class="container py-4">
+    <h2 class="text-white mb-4">🎵 Quản lý bài hát</h2>
 
-<table class="table table-dark table-hover">
-    <thead>
-        <tr>
-            <th>Ảnh</th>
-            <th>Tên</th>
-            <th>Nghệ sĩ</th>
-            <th>Thể loại</th>
-            <th>Lượt nghe</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var song in Model)
-        {
-            <tr>
-                <td><img src="@song.CoverImageUrl" width="60" /></td>
-                <td>@song.Title</td>
-                <td>@song.Artist?.Name</td>
-                <td>@song.Genre?.Name</td>
-                <td>@song.ListenCount</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@song.SongId" class="btn btn-warning btn-sm">Sửa</a>
-                    <a asp-action="Delete" asp-route-id="@song.SongId" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Xóa bài này?')">Xóa</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <a asp-action="Create" class="btn btn-success mb-3">
+        <i class="fas fa-plus me-1"></i> Thêm bài hát mới
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Ảnh</th>
+                    <th>ID</th>
+                    <th>Tên bài hát</th>
+                    <th>Nghệ sĩ</th>
+                    <th>Thể loại</th>
+                    <th>Thời lượng</th>
+                    <th>Ngày phát hành</th>
+                    <th>File nhạc</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var song in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(song.CoverImageUrl))
+                            {
+                                <img src="@song.CoverImageUrl"
+                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"
+                                     onerror="this.src='/images/default-song.jpg'" />
+                            }
+                            else
+                            {
+                                <div style="width: 50px; height: 50px; background-color: #282828; border-radius: 4px;"></div>
+                            }
+                        </td>
+                        <td>@song.SongId</td>
+                        <td>@song.Title</td>
+                        <td>@song.Artist?.Name</td>
+                        <td>@song.Genre?.Name</td>
+                        <td>@FormatDuration(song.Duration)</td>
+                        <td>@(song.ReleaseDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(song.FilePath))
+                            {
+                                <audio controls style="height: 30px; width: 150px;">
+                                    <source src="@song.FilePath" type="audio/mpeg" />
+                                </audio>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@song.SongId" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                            
+                            <!-- ✅ SỬA: Dùng form thay vì fetch -->
+                            <form asp-action="Delete" asp-route-id="@song.SongId" method="post" style="display: inline;" onsubmit="return confirm('Bạn có chắc muốn xóa bài hát @song.Title?')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    string FormatDuration(int seconds)
+    {
+        var time = TimeSpan.FromSeconds(seconds);
+        return $"{time.Minutes:D2}:{time.Seconds:D2}";
+    }
+}

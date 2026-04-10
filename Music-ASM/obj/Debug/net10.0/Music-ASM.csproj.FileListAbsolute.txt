@@ -447,5 +447,5 @@ D:\Music-ASM\Music-ASM\obj\Debug\net10.0\refint\Music-ASM.dll
 D:\Music-ASM\Music-ASM\obj\Debug\net10.0\Music-ASM.pdb
 D:\Music-ASM\Music-ASM\obj\Debug\net10.0\Music-ASM.genruntimeconfig.cache
 D:\Music-ASM\Music-ASM\obj\Debug\net10.0\ref\Music-ASM.dll
-D:\Music-ASM\Music-ASM\obj\Debug\net10.0\compressed\vtf5cdi10m-{0}-1fccpg0rgb-1fccpg0rgb.gz
 D:\Music-ASM\Music-ASM\obj\Debug\net10.0\Music-ASM.sourcelink.json
+D:\Music-ASM\Music-ASM\obj\Debug\net10.0\compressed\vtf5cdi10m-{0}-7b5u0encel-7b5u0encel.gz

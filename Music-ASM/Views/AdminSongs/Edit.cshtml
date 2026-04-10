@@ -5,39 +5,84 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
-
-    <!-- ID -->
+    @Html.AntiForgeryToken()  <!-- ← THÊM DÒNG NÀY -->
     <input type="hidden" asp-for="SongId" />
 
     <!-- TITLE -->
-    <input asp-for="Title" class="form-control mb-2" placeholder="Tên bài hát" />
-    <span asp-validation-for="Title" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="Title" class="form-label">Tên bài hát</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
 
-    <!-- FILE MP3 -->
-    <label>File nhạc (nếu muốn đổi)</label>
-    <input type="file" name="audioFile" class="form-control mb-2" />
+    <!-- CURRENT AUDIO -->
+    @if (!string.IsNullOrEmpty(Model.FilePath))
+    {
+        <div class="mb-2">
+            <label class="form-label">File nhạc hiện tại</label>
+            <audio controls class="d-block">
+                <source src="@Model.FilePath" type="audio/mpeg" />
+            </audio>
+        </div>
+    }
+    <div class="mb-2">
+        <label class="form-label">Thay đổi file nhạc</label>
+        <input type="file" name="audioFile" class="form-control" accept=".mp3" />
+        <small class="text-muted">Để trống nếu không muốn thay đổi</small>
+    </div>
 
-    <!-- GIỮ FILE CŨ -->
-    <input type="hidden" asp-for="FilePath" />
-
-    <!-- ẢNH -->
-    <label>Ảnh bìa (nếu muốn đổi)</label>
-    <input type="file" name="imageFile" class="form-control mb-2" />
-
-    <!-- GIỮ ẢNH CŨ -->
-    <input type="hidden" asp-for="CoverImageUrl" />
+    <!-- CURRENT IMAGE -->
+    @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+    {
+        <div class="mb-2">
+            <label class="form-label">Ảnh hiện tại</label>
+            <img src="@Model.CoverImageUrl" style="width: 100px; height: 100px; object-fit: cover; display: block;" />
+        </div>
+    }
+    <div class="mb-2">
+        <label class="form-label">Thay đổi ảnh</label>
+        <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        <small class="text-muted">Để trống nếu không muốn thay đổi</small>
+    </div>
 
     <!-- DURATION -->
-    <input asp-for="Duration" type="number" class="form-control mb-2" />
-    <span asp-validation-for="Duration" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="Duration" class="form-label">Thời lượng (giây)</label>
+        <input asp-for="Duration" type="number" min="1" class="form-control" />
+        <span asp-validation-for="Duration" class="text-danger"></span>
+    </div>
+
+    <!-- RELEASE DATE -->
+    <div class="mb-2">
+        <label asp-for="ReleaseDate" class="form-label">Ngày phát hành</label>
+        <input asp-for="ReleaseDate" type="date" class="form-control" />
+        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    </div>
 
     <!-- ARTIST -->
-    <select asp-for="ArtistId" asp-items="ViewBag.Artists" class="form-control mb-2"></select>
-    <span asp-validation-for="ArtistId" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="ArtistId" class="form-label">Nghệ sĩ</label>
+        <select asp-for="ArtistId" asp-items="ViewBag.Artists" class="form-control">
+            <option value="">-- Chọn nghệ sĩ --</option>
+        </select>
+        <span asp-validation-for="ArtistId" class="text-danger"></span>
+    </div>
 
     <!-- GENRE -->
-    <select asp-for="GenreId" asp-items="ViewBag.Genres" class="form-control mb-2"></select>
-    <span asp-validation-for="GenreId" class="text-danger"></span>
+    <div class="mb-2">
+        <label asp-for="GenreId" class="form-label">Thể loại</label>
+        <select asp-for="GenreId" asp-items="ViewBag.Genres" class="form-control">
+            <option value="">-- Chọn thể loại --</option>
+        </select>
+        <span asp-validation-for="GenreId" class="text-danger"></span>
+    </div>
 
-    <button type="submit" class="btn btn-warning">Cập nhật</button>
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

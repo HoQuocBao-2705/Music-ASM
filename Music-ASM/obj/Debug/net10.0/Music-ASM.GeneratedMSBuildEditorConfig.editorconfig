@@ -42,6 +42,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Music-ASM/Music-ASM/Views/Account/UpgradePremium.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxVcGdyYWRlUHJlbWl1bS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Music-ASM/Music-ASM/Views/AdminSongs/Artists.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Tb25nc1xBcnRpc3RzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

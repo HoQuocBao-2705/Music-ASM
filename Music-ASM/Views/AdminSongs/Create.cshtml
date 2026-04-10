@@ -10,17 +10,19 @@
     <input asp-for="Title" class="form-control mb-2" placeholder="Tên bài hát" />
     <span asp-validation-for="Title" class="text-danger"></span>
 
-    <!-- FILE -->
+    <!-- FILE AUDIO -->
     <input type="file" name="audioFile" class="form-control mb-2" accept=".mp3" />
 
-
-    <!-- COVER -->
+    <!-- COVER IMAGE -->
     <input type="file" name="imageFile" class="form-control mb-2" accept="image/*" />
-
 
     <!-- DURATION -->
     <input asp-for="Duration" type="number" min="1" class="form-control mb-2" placeholder="Thời lượng (giây)" />
     <span asp-validation-for="Duration" class="text-danger"></span>
+
+    <!-- RELEASE DATE - THÊM MỚI -->
+    <input asp-for="ReleaseDate" type="date" class="form-control mb-2" />
+    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
 
     <!-- ARTIST -->
     <select asp-for="ArtistId" asp-items="ViewBag.Artists" class="form-control mb-2">

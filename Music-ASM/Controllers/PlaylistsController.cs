@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization; // Cần thêm thư viện này
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Music_ASM.Models;
 using System.Security.Claims;
 
+// Thêm [Authorize] để bắt buộc người dùng phải đăng nhập mới được vào các trang này
+// Nếu không đăng nhập, hệ thống sẽ tự động đá về trang Login thay vì báo lỗi đỏ trang web
+[Authorize]
 public class PlaylistController : Controller
 {
     private readonly MusicAsmDbContext _context;
@@ -19,6 +23,11 @@ public class PlaylistController : Controller
 
         var playlists = await _context.Playlists
             .Where(p => p.UserId == userId)
+            // 👇 THÊM 2 DÒNG NÀY ĐỂ FIX LỖI ẢNH BỊ VỠ 👇
+            .Include(p => p.PlaylistSongs)
+                .ThenInclude(ps => ps.Song)
+            // Thêm AsNoTracking() giúp web chạy nhanh hơn vì chỉ đọc data mà không cần lưu lịch sử thay đổi
+            .AsNoTracking()
             .ToListAsync();
 
         return View(playlists);
@@ -41,6 +50,7 @@ public class PlaylistController : Controller
         _context.Playlists.Add(playlist);
         await _context.SaveChangesAsync();
 
+        TempData["SuccessMessage"] = "Tạo playlist thành công!";
         return RedirectToAction("Index");
     }
 
@@ -51,7 +61,13 @@ public class PlaylistController : Controller
             .Include(p => p.PlaylistSongs)
                 .ThenInclude(ps => ps.Song)
                     .ThenInclude(s => s.Artist)
+            .AsNoTracking() // Tối ưu tốc độ đọc
             .FirstOrDefaultAsync(p => p.PlaylistId == id);
+
+        if (playlist == null)
+        {
+            return NotFound(); // Trả về trang 404 nếu không tìm thấy playlist
+        }
 
         return View(playlist);
     }
@@ -78,6 +94,7 @@ public class PlaylistController : Controller
 
         return Conflict("Bài hát đã có trong playlist"); // Trả về 409 nếu đã tồn tại
     }
+
     // Trong PlaylistController.cs
     public async Task<IActionResult> Choose(int songId)
     {
@@ -88,10 +105,59 @@ public class PlaylistController : Controller
         var playlists = await _context.Playlists
             .Where(p => p.UserId == userId)
             .Include(p => p.PlaylistSongs)
+            .AsNoTracking()
             .ToListAsync();
 
         ViewBag.SongId = songId;
 
         return View(playlists);
+    }
+
+    // 🗑️ Xóa bài hát khỏi playlist
+    [HttpPost]
+    public async Task<IActionResult> RemoveSong(int playlistId, int songId)
+    {
+        var playlistSong = await _context.PlaylistSongs
+            .FirstOrDefaultAsync(ps => ps.PlaylistId == playlistId && ps.SongId == songId);
+
+        if (playlistSong != null)
+        {
+            _context.PlaylistSongs.Remove(playlistSong);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Đã xóa bài hát khỏi playlist!";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Không tìm thấy bài hát trong playlist!";
+        }
+
+        return RedirectToAction("Details", new { id = playlistId });
+    }
+
+    // 🗑️ Xóa toàn bộ playlist
+    [HttpPost]
+    public async Task<IActionResult> DeletePlaylist(int id)
+    {
+        // Lấy playlist cần xóa
+        var playlist = await _context.Playlists
+            .Include(p => p.PlaylistSongs)
+            .FirstOrDefaultAsync(p => p.PlaylistId == id);
+
+        if (playlist == null)
+        {
+            TempData["ErrorMessage"] = "Không tìm thấy playlist!";
+            return RedirectToAction("Index");
+        }
+
+        // Xóa tất cả bài hát trong playlist trước
+        _context.PlaylistSongs.RemoveRange(playlist.PlaylistSongs);
+
+        // Xóa playlist
+        _context.Playlists.Remove(playlist);
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Đã xóa playlist thành công!";
+        return RedirectToAction("Index");
     }
 }

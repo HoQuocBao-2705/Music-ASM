@@ -50,15 +50,15 @@ namespace Music_ASM.Controllers
                 }
 
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim("FullName", fullName),
-            new Claim(ClaimTypes.Email, user.Email ?? ""),
-            new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User"),
-            new Claim("Avatar", user.AvatarUrl ?? ""),
-            new Claim("IsPremium", user.IsPremium.ToString())
-        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim("FullName", fullName),
+                    new Claim(ClaimTypes.Email, user.Email ?? ""),
+                    new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User"),
+                    new Claim("Avatar", user.AvatarUrl ?? ""),
+                    new Claim("IsPremium", user.IsPremium.ToString())
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties { IsPersistent = true };
@@ -132,23 +132,48 @@ namespace Music_ASM.Controllers
             TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập để nghe nhạc.";
             return RedirectToAction("Login");
         }
-        // GET: Hiển thị trang hồ sơ người dùng
+
+        // GET: Hiển thị trang hồ sơ người dùng (ĐÃ ĐƯỢC CẬP NHẬT)
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Profile()
         {
-            // Lấy UserId từ claims
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-            // Lấy thông tin user từ database
+            var userId = int.Parse(userIdClaim);
+
+            // Lấy thông tin user cùng với các thống kê
             var user = await _context.Users
                 .Include(u => u.Role)
+                .Include(u => u.Playlists) // Lấy thêm danh sách Playlists
                 .FirstOrDefaultAsync(u => u.UserId == userId);
 
             if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
+
+            // Đếm số bài hát yêu thích
+            var favoriteCount = await _context.FavoriteSongs
+                .CountAsync(f => f.UserId == userId);
+
+            // Đếm tổng lượt nghe
+            var totalListenCount = await _context.Set<ListeningHistory>()
+                .CountAsync(h => h.UserId == userId);
+
+            // Tổng thời gian nghe
+            var totalListeningTime = await _context.Set<ListeningHistory>()
+                .Where(h => h.UserId == userId)
+                .SumAsync(h => (long?)h.Duration) ?? 0;
+
+            // Gán dữ liệu vào ViewBag để đẩy sang View
+            ViewBag.FavoriteCount = favoriteCount;
+            ViewBag.TotalListenCount = totalListenCount;
+            ViewBag.TotalListeningTime = totalListeningTime;
 
             return View(user);
         }
@@ -228,6 +253,46 @@ namespace Music_ASM.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity)
             );
+        }
+
+        // GET: Trang nâng cấp Premium
+        [HttpGet]
+        [Authorize]
+        public IActionResult UpgradePremium()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = _context.Users.Find(userId);
+
+            if (user == null) return RedirectToAction("Login");
+
+            // Tạo mã giao dịch ngẫu nhiên
+            var transactionId = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
+            ViewBag.TransactionId = transactionId;
+            ViewBag.Amount = "50,000";
+            ViewBag.UserName = user.Username;
+
+            return View(user);
+        }
+
+        // POST: Xử lý sau khi thanh toán thành công
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ConfirmUpgrade(string transactionId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return NotFound();
+
+            // Cập nhật premium
+            user.IsPremium = true;
+            await _context.SaveChangesAsync();
+
+            // Cập nhật claim
+            await UpdateClaim("IsPremium", "True");
+
+            TempData["SuccessMessage"] = "Chúc mừng! Bạn đã trở thành thành viên Premium. 🎉";
+            return RedirectToAction("Profile");
         }
     }
 }

@@ -37,3 +37,21 @@
     font-size: 0.85rem;
     color: #b3b3b3;
 }
+.btn-outline-danger {
+    transition: all 0.2s;
+}
+
+    .btn-outline-danger:hover {
+        transform: scale(1.05);
+    }
+
+.btn-outline-success:hover {
+    transform: scale(1.05);
+}
+
+/* Modal xác nhận tùy chỉnh (nếu muốn) */
+.custom-confirm {
+    background-color: #282828;
+    color: white;
+    border-radius: 8px;
+}

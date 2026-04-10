@@ -1,21 +1,88 @@
-﻿@model List<Music_ASM.Models.Playlist>
+﻿@using Music_ASM.Models
+@model List<Playlist>
 
-<h2>🎵 Playlist của bạn</h2>
+@{
+    ViewData["Title"] = "Playlist của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<a asp-action="Create" class="btn btn-primary mb-3">+ Tạo Playlist</a>
-
-<div class="row">
-    @foreach (var p in Model)
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">📁 Playlist của tôi</h2>
+        <a asp-controller="Playlist" asp-action="Create" class="btn btn-success rounded-pill px-4">
+            <i class="fas fa-plus me-2"></i>Tạo Playlist mới
+        </a>
+    </div>
+    
+    @if (TempData["SuccessMessage"] != null)
     {
-        <div class="col-md-3">
-            <div class="song-card">
-                <img src="@p.CoverImageUrl" />
-                <div class="song-title">@p.Title</div>
-
-                <a asp-action="Details" asp-route-id="@p.PlaylistId" class="btn btn-sm btn-light mt-2">
-                    Xem
-                </a>
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var playlist in Model)
+            {
+                var firstSong = playlist.PlaylistSongs?.FirstOrDefault()?.Song;
+                
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="playlist-card" style="background-color: #181818; border-radius: 8px; padding: 16px; transition: all 0.2s;">
+                        <a asp-controller="Playlist" asp-action="Details" asp-route-id="@playlist.PlaylistId" style="text-decoration: none;">
+                            <img src="@(firstSong?.CoverImageUrl ?? playlist.CoverImageUrl ?? "/images/default-playlist.jpg")"
+                                 alt="@playlist.Title"
+                                 style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 12px;">
+                            <h6 class="text-white mb-1" style="font-weight: 600;">@playlist.Title</h6>
+                            <p class="text-muted small mb-2">@(playlist.PlaylistSongs?.Count ?? 0) bài hát</p>
+                        </a>
+                        <div class="d-flex gap-2">
+                            <a asp-controller="Playlist" asp-action="Details" asp-route-id="@playlist.PlaylistId"
+                                   class="btn btn-outline-light btn-sm rounded-pill flex-grow-1">
+                                <i class="fas fa-eye me-1"></i> Xem
+                            </a>
+                            <button onclick="confirmDelete(@playlist.PlaylistId)"
+                                    class="btn btn-outline-danger btn-sm rounded-circle">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5" style="background-color: #181818; border-radius: 12px;">
+            <i class="fas fa-folder-open" style="font-size: 64px; color: #b3b3b3;"></i>
+            <h4 class="mt-3 text-white">Bạn chưa có playlist nào</h4>
+            <p class="text-muted">Hãy tạo playlist đầu tiên để lưu bài hát yêu thích</p>
+            <a asp-controller="Playlist" asp-action="Create" class="btn btn-success rounded-pill px-4 mt-2">
+                <i class="fas fa-plus me-2"></i>Tạo Playlist ngay
+            </a>
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(playlistId) {
+            if (confirm('Bạn có chắc muốn xóa playlist này?\nHành động này không thể hoàn tác!')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/Playlist/DeletePlaylist?id=${playlistId}`;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+}
+
+<style>
+    .playlist-card:hover {
+        transform: translateY(-5px);
+        background-color: #282828 !important;
+    }
+</style>

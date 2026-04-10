@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Music_ASM.Models;
-using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Music_ASM.Controllers
 {
@@ -101,6 +102,59 @@ namespace Music_ASM.Controllers
                 .ToList();
 
             return View(songs);
+        }
+        // API ghi nhận lượt nghe
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> TrackListening(int songId, int duration)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdClaim))
+                    return Unauthorized();
+
+                var userId = int.Parse(userIdClaim);
+
+                // Kiểm tra user và song tồn tại
+                var userExists = await _context.Users.AnyAsync(u => u.UserId == userId);
+                var songExists = await _context.Songs.AnyAsync(s => s.SongId == songId);
+
+                if (!userExists || !songExists)
+                {
+                    return BadRequest("User hoặc Song không tồn tại");
+                }
+
+                var history = new ListeningHistory
+                {
+                    UserId = userId,
+                    SongId = songId,
+                    ListenedAt = DateTime.Now,
+                    Duration = duration
+                };
+
+                _context.ListeningHistory.Add(history);
+
+                // Tăng lượt nghe cho bài hát
+                var song = await _context.Songs.FindAsync(songId);
+                if (song != null)
+                {
+                    song.ListenCount = (song.ListenCount ?? 0) + 1;
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (DbUpdateException ex)
+            {
+                var innerMessage = ex.InnerException?.Message;
+                Console.WriteLine($"Lỗi DB: {innerMessage}");
+                return StatusCode(500, $"Lỗi database: {innerMessage}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi: {ex.Message}");
+            }
         }
     }
 }

@@ -1,0 +1,240 @@
+﻿@using Music_ASM.Models
+@using Music_ASM.Helpers
+@model User
+
+@{
+    ViewData["Title"] = "Nâng cấp Premium";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var initials = UserHelper.GetInitials(Model?.FullName ?? Model?.Username ?? "User");
+    var avatarColor = UserHelper.GetAvatarColor(Model?.FullName ?? Model?.Username ?? "User");
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold" style="color: #1db954;">
+                    <i class="fas fa-crown me-2"></i>Nâng cấp Premium
+                </h1>
+                <p class="text-white-50">Trải nghiệm âm nhạc không giới hạn</p>
+            </div>
+            
+            <!-- So sánh gói -->
+            <div class="row mb-5">
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100" style="background-color: #181818; border: none; border-radius: 12px;">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user fa-3x text-secondary mb-3"></i>
+                            <h4 class="text-white">Free</h4>
+                            <p class="text-muted">Miễn phí</p>
+                            <hr style="background-color: #282828;">
+                            <ul class="list-unstyled text-start text-white-50">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Nghe nhạc cơ bản</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Tạo playlist</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i> Quảng cáo</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i> Chất lượng thường</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100" style="background-color: #1db954; border: none; border-radius: 12px; position: relative;">
+                        <div class="position-absolute top-0 end-0 bg-warning text-dark px-3 py-1 rounded-pill m-2 fw-bold">
+                            HOT
+                        </div>
+                        <div class="card-body text-center">
+                            <i class="fas fa-crown fa-3x text-white mb-3"></i>
+                            <h4 class="text-white">Premium</h4>
+                            <p class="text-white-50">50,000đ / tháng</p>
+                            <hr style="background-color: rgba(255,255,255,0.2);">
+                            <ul class="list-unstyled text-start text-white">
+                                <li class="mb-2"><i class="fas fa-check me-2"></i> Nghe nhạc không giới hạn</li>
+                                <li class="mb-2"><i class="fas fa-check me-2"></i> Tạo playlist không giới hạn</li>
+                                <li class="mb-2"><i class="fas fa-check me-2"></i> Không quảng cáo</li>
+                                <li class="mb-2"><i class="fas fa-check me-2"></i> Chất lượng cao nhất</li>
+                                <li class="mb-2"><i class="fas fa-check me-2"></i> Nghe nhạc offline</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @if (Model != null && Model.IsPremium == true)
+            {
+                <!-- Đã là Premium -->
+                <div class="text-center py-5" style="background-color: #181818; border-radius: 12px;">
+                    <i class="fas fa-crown fa-5x" style="color: #1db954;"></i>
+                    <h3 class="text-white mt-3">Bạn đã là thành viên Premium!</h3>
+                    <p class="text-muted">Cảm ơn bạn đã ủng hộ Music-ASM</p>
+                    <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-success rounded-pill px-4 mt-2">
+                        <i class="fas fa-user me-2"></i>Về trang cá nhân
+                    </a>
+                </div>
+            }
+            else
+            {
+                <!-- Form thanh toán -->
+                <div class="card" style="background-color: #181818; border: none; border-radius: 12px;">
+                    <div class="card-body p-4">
+                        <h4 class="text-white mb-4 text-center">
+                            <i class="fas fa-qrcode me-2"></i>Chọn phương thức thanh toán
+                        </h4>
+                        
+                        <div class="row">
+                            <!-- Mã QR -->
+                            <div class="col-md-6 text-center border-end" style="border-color: #282828 !important;">
+                                <h5 class="text-white mb-3">Quét mã QR để thanh toán</h5>
+                                <div id="qrcode-container" class="mb-3">
+                                    <canvas id="qrcode" style="width: 200px; height: 200px;"></canvas>
+                                </div>
+                                <p class="text-muted small">
+                                    <i class="fas fa-phone-alt me-1"></i> Quét bằng Momo / ZaloPay / ViettelPay
+                                </p>
+                                <div class="mt-2">
+                                    <span class="badge bg-success p-2">Số tiền: 50,000đ</span>
+                                    <span class="badge bg-secondary p-2 ms-2">Mã GD: @ViewBag.TransactionId</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Thông tin thanh toán -->
+                            <div class="col-md-6">
+                                <h5 class="text-white mb-3">Thông tin thanh toán</h5>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Tên tài khoản</label>
+                                    <input type="text" class="form-control" value="@Model?.FullName" style="background-color: #282828; border: none; color: white;" readonly>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Email</label>
+                                    <input type="text" class="form-control" value="@Model?.Email" style="background-color: #282828; border: none; color: white;" readonly>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Gói Premium</label>
+                                    <input type="text" class="form-control" value="1 tháng - 50,000đ" style="background-color: #282828; border: none; color: white;" readonly>
+                                </div>
+                                
+                                <hr style="background-color: #282828;">
+                                
+                                <div class="d-grid gap-2">
+                                    <button onclick="simulatePayment()" class="btn btn-success rounded-pill py-2">
+                                        <i class="fas fa-check-circle me-2"></i>Xác nhận đã thanh toán
+                                    </button>
+                                    <button onclick="copyTransactionId()" class="btn btn-outline-secondary rounded-pill py-2">
+                                        <i class="fas fa-copy me-2"></i>Sao chép mã giao dịch
+                                    </button>
+                                </div>
+                                
+                                <div class="alert alert-info mt-3 small" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Hướng dẫn: Quét mã QR, chuyển khoản 50,000đ, sau đó bấm "Xác nhận đã thanh toán"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Thêm thư viện QRCode -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+@section Scripts {
+    <script>
+        // Tạo mã QR
+        var transactionId = '@ViewBag.TransactionId';
+        var amount = '50000';
+        var bankCode = '970422'; // Momo test
+        var content = `NapPremium_${transactionId}`;
+        
+        // Tạo nội dung QR (mô phỏng thanh toán Momo)
+        var qrContent = `https://img.vietqr.io/image/${bankCode}-0987654321-compact.png?amount=${amount}&addInfo=${content}&accountName=MUSIC-ASM`;
+        
+        // Tạo QR Code
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: qrContent,
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Sao chép mã giao dịch
+        function copyTransactionId() {
+        navigator.clipboard.writeText(transactionId).then(function() {
+        showToast("Đã sao chép mã giao dịch: " + transactionId);
+        });
+        }
+        
+        // Hiển thị thông báo
+        function showToast(message) {
+        var toast = document.createElement('div');
+        toast.className = 'position-fixed bottom-0 end-0 p-3';
+        toast.style.zIndex = '1100';
+        toast.innerHTML = `
+        <div class="toast show" role="alert">
+        <div class="toast-header bg-success text-white">
+        <strong class="me-auto">Thông báo</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body bg-dark text-white">
+        ${message}
+        </div>
+        </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+        }
+        
+        // Mô phỏng thanh toán (xác nhận)
+        function simulatePayment() {
+        if (confirm('Xác nhận bạn đã chuyển khoản thành công 50,000đ?')) {
+        // Gửi request xác nhận
+        fetch('/Account/ConfirmUpgrade', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+        },
+        body: JSON.stringify({ transactionId: transactionId })
+        })
+        .then(response => {
+        if (response.ok) {
+        window.location.href = '/Account/Profile';
+        } else {
+        alert('Có lỗi xảy ra, vui lòng thử lại sau!');
+        }
+        })
+        .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra!');
+        });
+        }
+        }
+    </script>
+}
+
+<style>
+    .card {
+    transition: transform 0.2s;
+    }
+    
+    .card:hover {
+    transform: translateY(-3px);
+    }
+    
+    #qrcode canvas {
+    width: 200px !important;
+    height: 200px !important;
+    border-radius: 12px;
+    background: white;
+    padding: 10px;
+    }
+</style>

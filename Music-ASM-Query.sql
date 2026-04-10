@@ -156,3 +156,4 @@ INSERT INTO PlaylistSongs (PlaylistId, SongId) VALUES
 (2, 1), 
 (2, 2);
 GO
+select * from Users

@@ -31,6 +31,11 @@ public partial class MusicAsmDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    // 👇 THÊM MỚI 2 DBSET 👇
+    public virtual DbSet<FavoriteSong> FavoriteSongs { get; set; }
+
+    public virtual DbSet<ListeningHistory> ListeningHistory { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=LAPTOP-T361KM41\\SQLEXPRESS;Database=MusicASM_DB;Trusted_Connection=True;TrustServerCertificate=True;");
@@ -177,6 +182,57 @@ public partial class MusicAsmDbContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Users__RoleId__3D5E1FD2");
+        });
+
+        // 👇 CẤU HÌNH ĐẦY ĐỦ CHO 2 BẢNG MỚI VÀO ĐÂY 👇
+
+        // Cấu hình ListeningHistory (THÊM ĐẦY ĐỦ)
+        modelBuilder.Entity<ListeningHistory>(entity =>
+        {
+            entity.ToTable("ListeningHistory"); // Map to correct table name
+            entity.HasKey(e => e.HistoryId).HasName("PK__ListeningHistory__HistoryId");
+
+            entity.Property(e => e.ListenedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .HasColumnType("datetime");
+
+            entity.Property(e => e.Duration)
+                .HasDefaultValue(0);
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Song)
+                .WithMany()
+                .HasForeignKey(d => d.SongId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasIndex(h => h.ListenedAt);
+        });
+
+        // Cấu hình FavoriteSongs
+        modelBuilder.Entity<FavoriteSong>(entity =>
+        {
+            entity.ToTable("FavoriteSongs"); // Map to correct table name
+            entity.HasKey(e => e.FavoriteId).HasName("PK__FavoriteSongs__FavoriteId");
+
+            entity.Property(e => e.AddedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Song)
+                .WithMany()
+                .HasForeignKey(d => d.SongId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasIndex(f => new { f.UserId, f.SongId }).IsUnique();
         });
 
         OnModelCreatingPartial(modelBuilder);
