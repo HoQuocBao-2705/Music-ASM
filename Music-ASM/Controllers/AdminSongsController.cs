@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+
 namespace Music_ASM.Controllers
 {
     [Authorize(Roles = "Admin")]
@@ -157,13 +158,15 @@ namespace Music_ASM.Controllers
 
             return View(song);
         }
+
+        // ✏️ POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Song song, IFormFile? audioFile, IFormFile? imageFile)
         {
             if (id != song.SongId) return NotFound();
 
-            // ❗ Bỏ validation navigation (nếu chưa dùng ValidateNever hết)
+            // ❗ Bỏ validation navigation
             ModelState.Remove("FilePath");
             ModelState.Remove("CoverImageUrl");
             ModelState.Remove("Artist");
@@ -171,15 +174,38 @@ namespace Music_ASM.Controllers
             ModelState.Remove("Album");
             ModelState.Remove("PlaylistSongs");
 
-            // ❗ Validate dropdown
+            // ========================
+            // 🔒 RÀNG BUỘC KHÔNG ĐƯỢC ĐỂ TRỐNG
+            // ========================
+
+            // 1. Kiểm tra Title
+            if (string.IsNullOrWhiteSpace(song.Title))
+            {
+                ModelState.AddModelError("Title", "Tên bài hát không được để trống");
+            }
+
+            // 2. Kiểm tra Duration
+            if (song.Duration <= 0)
+            {
+                ModelState.AddModelError("Duration", "Thời lượng phải lớn hơn 0 giây");
+            }
+
+            // 3. Kiểm tra ArtistId
             if (song.ArtistId == 0)
             {
                 ModelState.AddModelError("ArtistId", "Vui lòng chọn nghệ sĩ");
             }
 
+            // 4. Kiểm tra GenreId
             if (song.GenreId == 0)
             {
                 ModelState.AddModelError("GenreId", "Vui lòng chọn thể loại");
+            }
+
+            // 5. Kiểm tra ReleaseDate
+            if (song.ReleaseDate == null)
+            {
+                ModelState.AddModelError("ReleaseDate", "Vui lòng chọn ngày phát hành");
             }
 
             if (!ModelState.IsValid)
@@ -195,79 +221,110 @@ namespace Music_ASM.Controllers
                 if (existingSong == null) return NotFound();
 
                 // ========================
-                // 🧾 UPDATE TEXT DATA
+                // 📝 CẬP NHẬT THÔNG TIN VĂN BẢN
                 // ========================
-                existingSong.Title = song.Title;
+                existingSong.Title = song.Title.Trim();
                 existingSong.ArtistId = song.ArtistId;
                 existingSong.GenreId = song.GenreId;
                 existingSong.Duration = song.Duration;
                 existingSong.ReleaseDate = song.ReleaseDate;
 
-                // 🎵 UPDATE AUDIO
+                // ========================
+                // 🎵 CẬP NHẬT FILE NHẠC
+                // ========================
                 if (audioFile != null && audioFile.Length > 0)
                 {
-                    // xóa file cũ
+                    // Kiểm tra định dạng file
+                    if (audioFile.ContentType != "audio/mpeg" && !audioFile.FileName.EndsWith(".mp3"))
+                    {
+                        ModelState.AddModelError("audioFile", "Chỉ chấp nhận file MP3");
+                        ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                        ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
+                        return View(song);
+                    }
+
+                    // Xóa file cũ
                     if (!string.IsNullOrEmpty(existingSong.FilePath))
                     {
-                        var oldPath = Path.Combine(
-                            _webHostEnvironment.WebRootPath,
-                            existingSong.FilePath.TrimStart('/')
-                        );
-
+                        var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, existingSong.FilePath.TrimStart('/'));
                         if (System.IO.File.Exists(oldPath))
                         {
                             System.IO.File.Delete(oldPath);
                         }
                     }
 
+                    // Upload file mới
                     var newPath = await ProcessFileAsync(audioFile, "music");
-
                     if (string.IsNullOrEmpty(newPath))
                     {
-                        ModelState.AddModelError("audioFile", "Upload thất bại");
+                        ModelState.AddModelError("audioFile", "Upload file nhạc thất bại");
+                        ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                        ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
                         return View(song);
                     }
-
                     existingSong.FilePath = newPath;
                 }
                 else
                 {
-                    // ❗ FIX CHUẨN: nếu không có file cũ → bắt buộc upload
+                    // Nếu không có file mới và file cũ cũng không tồn tại -> bắt buộc upload
                     if (string.IsNullOrEmpty(existingSong.FilePath))
                     {
-                        ModelState.AddModelError("audioFile", "Bạn phải chọn file nhạc");
-
+                        ModelState.AddModelError("audioFile", "Vui lòng chọn file nhạc MP3");
                         ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
                         ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
-
                         return View(song);
                     }
                 }
+
                 // ========================
-                // 🖼️ UPDATE IMAGE
+                // 🖼️ CẬP NHẬT ẢNH
                 // ========================
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    // ❗ Xóa ảnh cũ
+                    // Kiểm tra định dạng ảnh
+                    if (!imageFile.ContentType.StartsWith("image/"))
+                    {
+                        ModelState.AddModelError("imageFile", "Chỉ chấp nhận file ảnh (jpg, png, gif)");
+                        ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                        ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
+                        return View(song);
+                    }
+
+                    // Xóa ảnh cũ
                     if (!string.IsNullOrEmpty(existingSong.CoverImageUrl))
                     {
-                        var oldImgPath = Path.Combine(
-                            _webHostEnvironment.WebRootPath,
-                            existingSong.CoverImageUrl.TrimStart('/')
-                        );
-
+                        var oldImgPath = Path.Combine(_webHostEnvironment.WebRootPath, existingSong.CoverImageUrl.TrimStart('/'));
                         if (System.IO.File.Exists(oldImgPath))
                         {
                             System.IO.File.Delete(oldImgPath);
                         }
                     }
 
-                    // ❗ Upload ảnh mới
-                    existingSong.CoverImageUrl = await ProcessFileAsync(imageFile, "images/songs");
+                    // Upload ảnh mới
+                    var newImagePath = await ProcessFileAsync(imageFile, "images/songs");
+                    if (string.IsNullOrEmpty(newImagePath))
+                    {
+                        ModelState.AddModelError("imageFile", "Upload ảnh thất bại");
+                        ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                        ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
+                        return View(song);
+                    }
+                    existingSong.CoverImageUrl = newImagePath;
+                }
+                else
+                {
+                    // Nếu không có ảnh mới và ảnh cũ cũng không tồn tại -> bắt buộc upload
+                    if (string.IsNullOrEmpty(existingSong.CoverImageUrl))
+                    {
+                        ModelState.AddModelError("imageFile", "Vui lòng chọn ảnh bìa");
+                        ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                        ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
+                        return View(song);
+                    }
                 }
 
                 // ========================
-                // 💾 SAVE
+                // 💾 LƯU VÀO DATABASE
                 // ========================
                 await _context.SaveChangesAsync();
 
@@ -276,14 +333,14 @@ namespace Music_ASM.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Lỗi: " + ex.Message;
-
+                TempData["ErrorMessage"] = $"Lỗi: {ex.Message}";
                 ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
                 ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
-
                 return View(song);
             }
-        }        // ❌ Delete
+        }
+
+        // ❌ Delete
         [HttpPost]
         [ValidateAntiForgeryToken]  // ← QUAN TRỌNG: Thêm dòng này
         public async Task<IActionResult> Delete(int id)
@@ -368,18 +425,76 @@ namespace Music_ASM.Controllers
             return View(artist);
         }
 
+        // ===== EDIT ARTIST =====
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditArtist(int ArtistId, string Name, string Bio, string AvatarUrl)
+        {
+            try
+            {
+                var artist = await _context.Artists.FindAsync(ArtistId);
+                if (artist == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy nghệ sĩ!";
+                    return RedirectToAction("Artists");
+                }
+
+                if (string.IsNullOrWhiteSpace(Name))
+                {
+                    TempData["ErrorMessage"] = "Tên nghệ sĩ không được để trống!";
+                    return RedirectToAction("Artists");
+                }
+
+                artist.Name = Name.Trim();
+                artist.Bio = Bio;
+                artist.AvatarUrl = AvatarUrl;
+
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = $"Cập nhật nghệ sĩ {artist.Name} thành công!";
+                return RedirectToAction("Artists");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                return RedirectToAction("Artists");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteArtist(int id)
         {
-            var artist = await _context.Artists.FindAsync(id);
-            if (artist != null)
+            try
             {
+                var artist = await _context.Artists
+                    .Include(a => a.Songs)
+                    .FirstOrDefaultAsync(a => a.ArtistId == id);
+
+                if (artist == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy nghệ sĩ!";
+                    return RedirectToAction("Artists");
+                }
+
+                // ✅ KIỂM TRA: Nghệ sĩ có bài hát không?
+                if (artist.Songs != null && artist.Songs.Any())
+                {
+                    TempData["ErrorMessage"] = $"Không thể xóa nghệ sĩ vì có {artist.Songs.Count} bài hát liên quan. Vui lòng xóa hoặc chuyển bài hát sang nghệ sĩ khác trước!";
+                    return RedirectToAction("Artists");
+                }
+
                 _context.Artists.Remove(artist);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Xóa nghệ sĩ thành công!";
+
+                TempData["SuccessMessage"] = $"Xóa nghệ sĩ {artist.Name} thành công!";
+                return RedirectToAction("Artists");
             }
-            return RedirectToAction("Artists");
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi xóa: {ex.Message}";
+                return RedirectToAction("Artists");
+            }
         }
 
         // ===== GENRE MANAGEMENT =====
@@ -408,18 +523,76 @@ namespace Music_ASM.Controllers
             return View(genre);
         }
 
+        // ===== EDIT GENRE =====
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGenre(int GenreId, string Name, string Description, string ImageUrl)
+        {
+            try
+            {
+                var genre = await _context.Genres.FindAsync(GenreId);
+                if (genre == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy thể loại!";
+                    return RedirectToAction("Genres");
+                }
+
+                if (string.IsNullOrWhiteSpace(Name))
+                {
+                    TempData["ErrorMessage"] = "Tên thể loại không được để trống!";
+                    return RedirectToAction("Genres");
+                }
+
+                genre.Name = Name.Trim();
+                genre.Description = Description;
+                genre.ImageUrl = ImageUrl;
+
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = $"Cập nhật thể loại {genre.Name} thành công!";
+                return RedirectToAction("Genres");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi: {ex.Message}";
+                return RedirectToAction("Genres");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteGenre(int id)
         {
-            var genre = await _context.Genres.FindAsync(id);
-            if (genre != null)
+            try
             {
+                var genre = await _context.Genres
+                    .Include(g => g.Songs)
+                    .FirstOrDefaultAsync(g => g.GenreId == id);
+
+                if (genre == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy thể loại!";
+                    return RedirectToAction("Genres");
+                }
+
+                // ✅ KIỂM TRA: Thể loại có bài hát không?
+                if (genre.Songs != null && genre.Songs.Any())
+                {
+                    TempData["ErrorMessage"] = $"Không thể xóa thể loại vì có {genre.Songs.Count} bài hát liên quan. Vui lòng xóa hoặc chuyển bài hát sang thể loại khác trước!";
+                    return RedirectToAction("Genres");
+                }
+
                 _context.Genres.Remove(genre);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Xóa thể loại thành công!";
+
+                TempData["SuccessMessage"] = $"Xóa thể loại {genre.Name} thành công!";
+                return RedirectToAction("Genres");
             }
-            return RedirectToAction("Genres");
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi xóa: {ex.Message}";
+                return RedirectToAction("Genres");
+            }
         }
     }
-}   
+}
