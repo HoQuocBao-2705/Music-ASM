@@ -15,14 +15,17 @@
         <div class="row">
             @foreach (var playlist in Model)
             {
+                // Lấy bài hát đầu tiên trong playlist để làm ảnh (giống form Index)
                 var firstSong = playlist.PlaylistSongs?.FirstOrDefault()?.Song;
                 
                 <div class="col-md-4 col-lg-3 mb-3">
                     <div class="playlist-option-card" style="background-color: #181818; border-radius: 8px; padding: 12px; transition: all 0.2s;">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="@(firstSong?.CoverImageUrl ?? playlist.CoverImageUrl ?? "/images/default-playlist.jpg")"
+                            <!-- ẢNH: Lấy từ bài hát đầu tiên, nếu không có thì dùng ảnh mặc định -->
+                            <img src="@(firstSong?.CoverImageUrl ?? "/images/default-playlist.jpg")"
                                  alt="@playlist.Title"
-                                 style="width: 56px; height: 56px; object-fit: cover; border-radius: 8px;" />
+                                 style="width: 56px; height: 56px; object-fit: cover; border-radius: 8px;"
+                                 onerror="this.src='/images/default-playlist.jpg'" />
                             <div class="flex-grow-1">
                                 <h6 class="mb-0" style="color: #fff;">@playlist.Title</h6>
                                 <small style="color: #b3b3b3;">
@@ -66,6 +69,14 @@
         background-color: #282828 !important;
         transform: translateY(-2px);
         cursor: pointer;
+    }
+    
+    .playlist-option-card img {
+        transition: transform 0.2s;
+    }
+    
+    .playlist-option-card:hover img {
+        transform: scale(1.05);
     }
 </style>
 

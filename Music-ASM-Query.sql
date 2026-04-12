@@ -156,4 +156,37 @@ INSERT INTO PlaylistSongs (PlaylistId, SongId) VALUES
 (2, 1), 
 (2, 2);
 GO
-select * from Users
+
+
+
+-- Bảng lưu bài hát yêu thích
+CREATE TABLE FavoriteSongs (
+    FavoriteId INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    SongId INT NOT NULL,
+    AddedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(UserId),
+    FOREIGN KEY (SongId) REFERENCES Songs(SongId),
+    CONSTRAINT UQ_User_Song UNIQUE (UserId, SongId)
+);
+
+-- Bảng lưu lịch sử nghe nhạc
+CREATE TABLE ListeningHistory (
+    HistoryId INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    SongId INT NOT NULL,
+    ListenedAt DATETIME DEFAULT GETDATE(),
+    Duration INT, -- Số giây đã nghe
+    FOREIGN KEY (UserId) REFERENCES Users(UserId),
+    FOREIGN KEY (SongId) REFERENCES Songs(SongId)
+);
+select * from Songs
+SELECT TOP 5 SongId, Title, FilePath, CoverImageUrl 
+FROM Songs
+UPDATE Songs
+SET FilePath = '/music/default.mp3'
+WHERE FilePath IS NULL
+SELECT SongId, FilePath FROM Songs WHERE FilePath IS NULL
+UPDATE Songs
+SET ListenCount = 0
+WHERE ListenCount IS NULL

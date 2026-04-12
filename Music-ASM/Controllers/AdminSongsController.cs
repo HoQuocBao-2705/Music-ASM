@@ -73,51 +73,77 @@ namespace Music_ASM.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Song song, IFormFile? audioFile, IFormFile? imageFile)
         {
-            if (audioFile == null)
+            // ❗ Validate file
+            if (audioFile == null || audioFile.Length == 0)
             {
-                ModelState.AddModelError("audioFile", "Chưa chọn file mp3");
+                ModelState.AddModelError("audioFile", "Vui lòng chọn file MP3");
             }
 
-            if (imageFile == null)
+            if (imageFile == null || imageFile.Length == 0)
             {
-                ModelState.AddModelError("imageFile", "Chưa chọn ảnh");
+                ModelState.AddModelError("imageFile", "Vui lòng chọn ảnh bìa");
+            }
+
+            // ❗ Validate dropdown
+            if (song.ArtistId == 0)
+            {
+                ModelState.AddModelError("ArtistId", "Vui lòng chọn nghệ sĩ");
+            }
+
+            if (song.GenreId == 0)
+            {
+                ModelState.AddModelError("GenreId", "Vui lòng chọn thể loại");
+            }
+
+            // ❗ Gán mặc định ngày
+            if (song.ReleaseDate == null)
+            {
+                song.ReleaseDate = DateOnly.FromDateTime(DateTime.Now);
             }
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name");
-                ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name");
+                ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
                 return View(song);
             }
 
-            // upload audio
-            var audioName = Guid.NewGuid() + Path.GetExtension(audioFile.FileName);
-            var audioPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/music", audioName);
-
-            using (var stream = new FileStream(audioPath, FileMode.Create))
+            try
             {
-                await audioFile.CopyToAsync(stream);
+                // upload audio
+                var audioPath = await ProcessFileAsync(audioFile, "music");
+                if (!string.IsNullOrEmpty(audioPath))
+                {
+                    song.FilePath = audioPath;
+                }
+
+                // upload image
+                var imagePath = await ProcessFileAsync(imageFile, "images/songs");
+                if (!string.IsNullOrEmpty(imagePath))
+                {
+                    song.CoverImageUrl = imagePath;
+                }
+
+                song.ListenCount = 0;
+
+                _context.Songs.Add(song);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Thêm bài hát thành công!";
+                return RedirectToAction("Index");
             }
-
-            song.FilePath = "/music/" + audioName;
-
-            // upload image
-            var imgName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-            var imgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/songs", imgName);
-
-            using (var stream = new FileStream(imgPath, FileMode.Create))
+            catch (Exception ex)
             {
-                await imageFile.CopyToAsync(stream);
+                ModelState.AddModelError("", "Lỗi: " + ex.Message);
+
+                ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
+
+                return View(song);
             }
-
-            song.CoverImageUrl = "/images/songs/" + imgName;
-
-            _context.Songs.Add(song);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
         }
 
         // ✏️ GET: Edit
@@ -132,9 +158,29 @@ namespace Music_ASM.Controllers
             return View(song);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Song song, IFormFile? audioFile, IFormFile? imageFile)
         {
             if (id != song.SongId) return NotFound();
+
+            // ❗ Bỏ validation navigation (nếu chưa dùng ValidateNever hết)
+            ModelState.Remove("FilePath");
+            ModelState.Remove("CoverImageUrl");
+            ModelState.Remove("Artist");
+            ModelState.Remove("Genre");
+            ModelState.Remove("Album");
+            ModelState.Remove("PlaylistSongs");
+
+            // ❗ Validate dropdown
+            if (song.ArtistId == 0)
+            {
+                ModelState.AddModelError("ArtistId", "Vui lòng chọn nghệ sĩ");
+            }
+
+            if (song.GenreId == 0)
+            {
+                ModelState.AddModelError("GenreId", "Vui lòng chọn thể loại");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -143,41 +189,101 @@ namespace Music_ASM.Controllers
                 return View(song);
             }
 
-            // ===== UPDATE AUDIO =====
-            if (audioFile != null)
+            try
             {
-                var fileName = Guid.NewGuid() + Path.GetExtension(audioFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/music", fileName);
+                var existingSong = await _context.Songs.FindAsync(id);
+                if (existingSong == null) return NotFound();
 
-                using (var stream = new FileStream(path, FileMode.Create))
+                // ========================
+                // 🧾 UPDATE TEXT DATA
+                // ========================
+                existingSong.Title = song.Title;
+                existingSong.ArtistId = song.ArtistId;
+                existingSong.GenreId = song.GenreId;
+                existingSong.Duration = song.Duration;
+                existingSong.ReleaseDate = song.ReleaseDate;
+
+                // 🎵 UPDATE AUDIO
+                if (audioFile != null && audioFile.Length > 0)
                 {
-                    await audioFile.CopyToAsync(stream);
+                    // xóa file cũ
+                    if (!string.IsNullOrEmpty(existingSong.FilePath))
+                    {
+                        var oldPath = Path.Combine(
+                            _webHostEnvironment.WebRootPath,
+                            existingSong.FilePath.TrimStart('/')
+                        );
+
+                        if (System.IO.File.Exists(oldPath))
+                        {
+                            System.IO.File.Delete(oldPath);
+                        }
+                    }
+
+                    var newPath = await ProcessFileAsync(audioFile, "music");
+
+                    if (string.IsNullOrEmpty(newPath))
+                    {
+                        ModelState.AddModelError("audioFile", "Upload thất bại");
+                        return View(song);
+                    }
+
+                    existingSong.FilePath = newPath;
+                }
+                else
+                {
+                    // ❗ FIX CHUẨN: nếu không có file cũ → bắt buộc upload
+                    if (string.IsNullOrEmpty(existingSong.FilePath))
+                    {
+                        ModelState.AddModelError("audioFile", "Bạn phải chọn file nhạc");
+
+                        ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                        ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
+
+                        return View(song);
+                    }
+                }
+                // ========================
+                // 🖼️ UPDATE IMAGE
+                // ========================
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    // ❗ Xóa ảnh cũ
+                    if (!string.IsNullOrEmpty(existingSong.CoverImageUrl))
+                    {
+                        var oldImgPath = Path.Combine(
+                            _webHostEnvironment.WebRootPath,
+                            existingSong.CoverImageUrl.TrimStart('/')
+                        );
+
+                        if (System.IO.File.Exists(oldImgPath))
+                        {
+                            System.IO.File.Delete(oldImgPath);
+                        }
+                    }
+
+                    // ❗ Upload ảnh mới
+                    existingSong.CoverImageUrl = await ProcessFileAsync(imageFile, "images/songs");
                 }
 
-                song.FilePath = "/music/" + fileName;
-            }
+                // ========================
+                // 💾 SAVE
+                // ========================
+                await _context.SaveChangesAsync();
 
-            // ===== UPDATE IMAGE =====
-            if (imageFile != null)
+                TempData["SuccessMessage"] = "Cập nhật bài hát thành công!";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
             {
-                var fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/songs", fileName);
+                TempData["ErrorMessage"] = "Lỗi: " + ex.Message;
 
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await imageFile.CopyToAsync(stream);
-                }
+                ViewBag.Artists = new SelectList(_context.Artists, "ArtistId", "Name", song.ArtistId);
+                ViewBag.Genres = new SelectList(_context.Genres, "GenreId", "Name", song.GenreId);
 
-                song.CoverImageUrl = "/images/songs/" + fileName;
+                return View(song);
             }
-
-            _context.Update(song);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
-        }
-
-        // ❌ Delete
+        }        // ❌ Delete
         [HttpPost]
         [ValidateAntiForgeryToken]  // ← QUAN TRỌNG: Thêm dòng này
         public async Task<IActionResult> Delete(int id)

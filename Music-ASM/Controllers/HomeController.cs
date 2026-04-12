@@ -139,7 +139,7 @@ namespace Music_ASM.Controllers
                 var song = await _context.Songs.FindAsync(songId);
                 if (song != null)
                 {
-                    song.ListenCount = (song.ListenCount ?? 0) + 1;
+                    song.ListenCount = song.ListenCount += 1;
                 }
 
                 await _context.SaveChangesAsync();

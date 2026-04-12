@@ -101,18 +101,17 @@ public class PlaylistController : Controller
         // Lấy UserId từ người dùng đang đăng nhập
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        // Lấy danh sách playlist của user
+        // Lấy danh sách playlist của user (kèm theo bài hát)
         var playlists = await _context.Playlists
             .Where(p => p.UserId == userId)
             .Include(p => p.PlaylistSongs)
-            .AsNoTracking()
-            .ToListAsync();
+                .ThenInclude(ps => ps.Song)  // ← THÊM DÒNG NÀY để lấy thông tin bài hát
+            .ToListAsync();  // Bỏ .AsNoTracking() nếu không cần
 
         ViewBag.SongId = songId;
 
         return View(playlists);
     }
-
     // 🗑️ Xóa bài hát khỏi playlist
     [HttpPost]
     public async Task<IActionResult> RemoveSong(int playlistId, int songId)

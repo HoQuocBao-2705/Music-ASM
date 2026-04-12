@@ -1,15 +1,24 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\avatars\avatar_1_639114617072922956.png
+wwwroot\images\avatars\avatar_1_639114776398968530.png
 wwwroot\images\avatars\avatar_7_639114050122571009.png
 wwwroot\images\avatars\avatar_7_639114063244543694.jpg
+wwwroot\images\songs\02fc69e6-0912-4470-97d3-4097c1fc1786.jpg
+wwwroot\images\songs\04e2bb0f-05ff-4590-92a2-7cd71bf755b2.jpg
 wwwroot\images\songs\1697707543908_300.jpg
 wwwroot\images\songs\2ced2efd-9a2b-42f7-a08c-a514f73d62cf.jpg
+wwwroot\images\songs\2f456904-41d1-48cc-8cae-221230c312fb.jpg
+wwwroot\images\songs\4ba87216-fd3f-48ba-a616-383e2ec47467.jpg
+wwwroot\images\songs\5fcbe8ee-6553-41f1-844f-18b66e2dfc95.jpg
 wwwroot\images\songs\896129ce-26f6-4cea-b4ba-b0b0d9169f70.webp
 wwwroot\images\songs\a71a258a-55e1-4724-82ce-b4bb3a30f8f9.jpg
+wwwroot\images\songs\a97a6d38-2e61-4ef6-a432-a7ebf74adebc.jpg
 wwwroot\images\songs\artworks-SulYyzvm47QgVmqH-yL2nCw-t500x500.jpg
 wwwroot\images\songs\artworks-zmL13yWyzgXiXSEf-GZMRqQ-t500x500.jpg
+wwwroot\images\songs\c34f0147-296e-4fc1-ae2f-e419f256819b.jpg
 wwwroot\images\songs\cc8d1784-7200-4cc6-9126-103e9af65130.jpg
+wwwroot\images\songs\d24a76f0-bd38-4184-b09c-50f0f75b1f41.jpg
 wwwroot\images\songs\db3ef1a0-3ca5-45b6-a1d5-9205da8dad47.jpg
 wwwroot\images\songs\eb9f22c0-440c-4f03-a933-d21de2ea9b77.jpg
 wwwroot\images\songs\f2357f5e-f97d-4dd6-8b78-2b37cd601a4e.jpg
@@ -85,13 +94,21 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\music\294b211e-023e-4f0c-b587-5826f9783c37.mp3
+wwwroot\music\4aab4a2e-52e1-4431-8def-2eacd7bb0126.mp3
+wwwroot\music\558c204b-d8c7-470b-ab3e-899571deb865.mp3
+wwwroot\music\70c220a2-0e43-4b69-b146-81d42dedddd1.mp3
+wwwroot\music\8002203f-76fa-4990-bb9c-8b0c106f8850.mp3
+wwwroot\music\8a9f4222-8bcf-4821-b431-522524127e9e.mp3
 wwwroot\music\Another_Love.mp3
-wwwroot\music\Another_Love_639114772393087731.mp3
 wwwroot\music\Chìm_Sâu.mp3
 wwwroot\music\Chìm_Sâu_639114761937310988.mp3
 wwwroot\music\Chìm_Sâu_639114766596055802.mp3
 wwwroot\music\CHẠY NGAY ĐI.mp3
+wwwroot\music\d9f44bfe-bd30-4cf3-a03d-fe8ae445b895.mp3
+wwwroot\music\e2047c53-837b-49cf-97e1-331cf0985859.mp3
 wwwroot\music\Exit Sign.mp3
+wwwroot\music\f3362f30-e5c8-475a-84e0-cad998cce62f.mp3
 wwwroot\music\NNCS.mp3
 wwwroot\music\Ordinary.mp3
 wwwroot\music\Đen_-_Lối_Nhỏ_ft._Phương_Anh_Đào_(MV).mp3
