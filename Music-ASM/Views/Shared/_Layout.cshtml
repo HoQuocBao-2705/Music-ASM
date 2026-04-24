@@ -279,6 +279,10 @@
         <a asp-controller="Playlist" asp-action="Index" class="nav-item">
             <i class="fas fa-plus-square"></i> Tạo Playlist
         </a>
+
+        <a asp-controller="Home" asp-action="History" class="nav-item">
+            <i class="fas fa-history"></i> Lịch sử
+        </a>
     </nav>
 
     <main class="main-wrapper">
@@ -554,6 +558,7 @@
             currentSongId = songId;
             listenStartTime = Date.now();
 
+
             fetch(`/Home/PlaySong?id=${songId}`)
                 .then(res => res.json())
                 .then(data => {
@@ -593,11 +598,11 @@
         }
         
         // 🎯 HÀM GHI NHẬN THỜI GIAN NGHE
-        function trackListeningTime() {
+            function trackListeningTime(isCompleted = false) {
             if (currentSongId && listenStartTime) {
                 const duration = Math.floor((Date.now() - listenStartTime) / 1000);
                 if (duration >= 5) { // Chỉ ghi nhận nếu nghe >= 5 giây
-                    fetch('/Home/TrackListening', {
+                        fetch('/Home/TrackListening?songId=' + currentSongId + '&duration=' + duration, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -614,11 +619,11 @@
         }
 
         // Tự động chuyển bài và ghi nhận
-        audio.addEventListener("ended", () => {
-            trackListeningTime();
-            nextSong();
-            savePlayerState();
-        });
+            audio.addEventListener("ended", () => {
+                trackListeningTime(true);
+                nextSong();
+                savePlayerState();
+            });
 
         function togglePlay() {
             if (!audio.src) return;
@@ -731,7 +736,8 @@
                 event.preventDefault();
                 goForward();
             }
-        });            
+        });       
+        
     </script>
 
 </body>

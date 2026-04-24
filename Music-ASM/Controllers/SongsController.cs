@@ -166,5 +166,38 @@ namespace Music_ASM.Controllers
             ViewBag.ArtistId = new SelectList(_context.Artists, "ArtistId", "Name");
             ViewBag.AlbumId = new SelectList(_context.Albums, "AlbumId", "Title");
         }
+        [HttpPost]
+        public async Task<IActionResult> SaveHistory([FromBody] HistoryRequest req)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+                return Unauthorized();
+
+            if (req.Duration < 5)
+                return Ok(); // tránh spam
+
+            var history = new ListeningHistory
+            {
+                UserId = userId.Value,
+                SongId = req.SongId,
+                Duration = req.Duration,
+                IsCompleted = req.IsCompleted,
+                ListenedAt = DateTime.Now
+            };
+
+            _context.ListeningHistory.Add(history);
+
+            // tăng lượt nghe
+            var song = await _context.Songs.FindAsync(req.SongId);
+            if (song != null)
+            {
+                song.ListenCount += 1;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

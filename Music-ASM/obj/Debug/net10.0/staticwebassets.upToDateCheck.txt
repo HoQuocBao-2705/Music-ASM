@@ -33,6 +33,7 @@ wwwroot\images\songs\tải_xuống_(1)_639114761820819214.jpg
 wwwroot\images\songs\tải_xuống_(1)_639114766355957467.jpg
 wwwroot\images\songs\tải_xuống_(1)_639114769919142373.jpg
 wwwroot\images\songs\tải_xuống_(1)_639114772393187243.jpg
+wwwroot\images\songs\We_Will_Rock_You_639124716217824159.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -111,6 +112,7 @@ wwwroot\music\Exit Sign.mp3
 wwwroot\music\f3362f30-e5c8-475a-84e0-cad998cce62f.mp3
 wwwroot\music\NNCS.mp3
 wwwroot\music\Ordinary.mp3
+wwwroot\music\We_Will_Rock_You_639124716217712103.mp3
 wwwroot\music\Đen_-_Lối_Nhỏ_ft._Phương_Anh_Đào_(MV).mp3
 wwwroot\music\Đen_-_Lối_Nhỏ_ft._Phương_Anh_Đào_(MV)_639114769368569960.mp3
 wwwroot\music\Đen_-_Lối_Nhỏ_ft._Phương_Anh_Đào_(MV)_639114769809194066.mp3

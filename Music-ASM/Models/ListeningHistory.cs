@@ -13,7 +13,7 @@ namespace Music_ASM.Models
         public int SongId { get; set; }
         public DateTime ListenedAt { get; set; } = DateTime.Now;
         public int Duration { get; set; } // Số giây đã nghe
-
+        public bool IsCompleted { get; set; } = false;
         // Navigation properties
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

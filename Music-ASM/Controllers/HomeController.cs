@@ -103,7 +103,7 @@ namespace Music_ASM.Controllers
 
             return View(songs);
         }
-        // API ghi nhận lượt nghe
+         //API ghi nhận lượt nghe
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> TrackListening(int songId, int duration)
@@ -155,6 +155,49 @@ namespace Music_ASM.Controllers
             {
                 return StatusCode(500, $"Lỗi: {ex.Message}");
             }
+        }
+        //[HttpPost]
+        //public IActionResult TrackListening([FromBody] ListeningHistory model)
+        //{
+        //    var userId = HttpContext.Session.GetInt32("UserId");
+
+        //    if (userId == null)
+        //        return Unauthorized();
+
+        //    var history = new ListeningHistory
+        //    {
+        //        UserId = userId.Value,
+        //        SongId = model.SongId,
+        //        Duration = model.Duration,
+        //        ListenedAt = DateTime.Now,
+        //        IsCompleted = false
+        //    };
+
+        //    _context.ListeningHistory.Add(history);
+        //    _context.SaveChanges();
+
+        //    return Ok();
+        //}
+        [Authorize]
+        public async Task<IActionResult> History()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized();
+
+            var userId = int.Parse(userIdClaim);
+
+            var history = await _context.ListeningHistory
+                .Where(h => h.UserId == userId)
+                .OrderByDescending(h => h.ListenedAt)
+                .Select(h => h.Song)
+                .Distinct()
+                .Take(20)
+                .Include(s => s.Artist)
+                .ToListAsync();
+
+            return View(history);
         }
     }
 }
